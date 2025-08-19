@@ -1,0 +1,141 @@
+# Data Exploration Refresher
+
+So far in your data science journey you have experienced cleaning data, visualizing data, communicating the data, and maybe even modeling the data. This is typically what we call the \textit{Data Science Life-cycle}, an iterative process where we acquire, clean, explore, model, and communicate the data. Throughout this course we will aim to accomplish all of these tasks using more sophisticated methods. Before we dive too far into Data Wrangling we should probably refresh ourselves on how best to clean and transform a dataset using \textit{tidyr} and \textit{dplyr}. This lecture will be requiring you to have the `tidyr`, `dplyr` and `MSMU` libraries already installed, so if you have not then you will need to do so by using the `install.packages("LIBRARY_NAME")` command. 
+
+```{r}
+#| warning: false
+#| message: false
+library(dplyr)
+library(tidyr)
+library(MSMU)
+```
+
+## Dplyr
+
+The `dplyr` library contains powerful tools that make cleaning, sorting, filtering, and manipulating datasets easy. To see this in action we will look at the *airquality* dataset which is available in base R. Before we dive into the functions, we should remind ourselves that the `|>` pipe function allows us to take a dataframe and pass it into a function without having to specify the dataframe. Think of the pipe as saying ‘and then.’ We take this dataset, and then we select these columns, and then we rename one of them, and then.... This makes the code much cleaner and easier to interpret/write.
+
+### Select
+
+The first function we should familiarize ourselves with is the `select()` function, which allows us to *select* which columns we want to include in the dataframe. In the code below we can see that original dataset had 17 columns, but knowing that all were not vital for us we only selected 5 that we knew we were going to work with. 
+
+<!--
+airquality <- tibble(airquality)
+
+head(airquality)
+
+airquality |> filter(Wind > 17)
+
+airquality |> filter(Wind > 17 | Ozone <= 7)
+
+airquality |> filter(Wind > 17 , Ozone <= 7)
+
+
+airquality |> filter(Wind > 17) |> select(Month, Day, Wind, Temp)
+-->
+
+```{r}
+county_data <- tibble(county_data)
+
+county_data
+
+county_data |> select(state, name, pop, bachelors, median_household_income)
+```
+
+### Rename
+
+Another command which might be useful for us is the `rename()` function, which allows us to rename a column (who would have thought?!?). In the code below we can see that we have renamed the "median_household_income" to "med_income". This makes it easier to reference later as we will not have to type in the long name anymore. Also notice that we start with a dataframe called `county_data`, which we then pipe a function to create a new dataframe with only 5 columns selected, which we then pipe into a function to create a new dataframe with the "median_household_income" column renamed. All of this to say that we can (and will) have lines of code that utilize multiple functions and pipes. It should also be noted that what we have made is a temporary dataframe, if we want to save it then we will need to save it to a variable (which we do below).
+
+```{r}
+county_data |> select(state, name, pop, bachelors, median_household_income) |> 
+    rename(med_income = median_household_income)
+
+cd1 <- county_data |> select(state, name, pop, bachelors, median_household_income) |> 
+           rename(med_income = median_household_income)
+
+cd1
+```
+
+### Filter
+
+The `filter()` function will allow us to filter a dataset based on one or multiple conditions. In the code below, we want to only show the counties whose median income is greater than \$120,000. While we could do this with index-selection brackets, using the `filter()` is probably a little easier. This does not mean that we should forget our basic R commands and logic!
+
+```{r}
+cd1[cd1$med_income > 120000,]
+cd1 |> filter(med_income > 120000)
+```
+
+We can pass in multiple conditionals into the command as well. Below we can see the counties with either the median income above \$120,000 **or** (denoted by |) more than 60% having a bachelors degree. If we put a comma instead that signifies the median income above \$120,000 **and** more than 60% having a bachelors degree.
+
+```{r}
+cd1 |> filter(med_income > 120000 | bachelors > 60)
+    
+cd1 |> filter(med_income > 120000 , bachelors > 60)
+```
+
+### Mutate
+
+If we wish to alter (some may even say mutate) the dataset then we can use the `mutate()` function to accomplish this task. The function allows us to create a new column based on some value or some expression. If we want to alter a column that already exists then we can reference the column and it will be overwritten. In the example below we create a new column to calculate the percentage of people in the county who do not have a bachelors degree.  
+
+```{r}
+cd1 |> filter(med_income > 120000 , bachelors > 60) |>
+    mutate(no_bach = 100 - bachelors)
+```
+
+### Arrange
+
+Occasionally we might want to sort a dataset so that the values are in order from least to greatest (or greatest to least). To do this we can use the `arrange()` function. It should be noted that we can arrange on multiple variables, meaning if there is a tie in the first variable then the next variable is used to sort as the tie break. If we want to put the items in decreasing order then we can specify that by using the `desc()` function. 
+
+```{r}
+cd1 |> filter(med_income > 120000 , bachelors > 60) |>
+    mutate(no_bach = 100 - bachelors) |>
+    arrange(desc(pop))
+```
+
+### Summarise
+
+A common task we might encounter as data scientists is to calculate different statistics to learn more about the dataset. To do this, we can use the `summarise()` function. We can pass multiple statistics we want to calculate into the function. 
+
+```{r}
+cd1 |> summarise(total_pop = sum(pop), avg_income = mean(med_income))
+```
+
+### Group By
+
+Calculating statistics on a whole dataset is nice, but it is also beneficial to calculate the statistics based on some categorical characteristic within the dataset. To do this we can use the `group_by()` function which (behind the scenes) will essentially make small datasets for each characteristic. Using the `summarise()` with this allows us to make calculations on each group. In the example below we calculate the total population for each state along with the average median income level for each state. 
+
+```{r}
+cd1 |> group_by(state) |>
+    summarise(total_pop = sum(pop), avg_income = mean(med_income))
+```
+
+
+## Tidyr
+
+When dealing with data, it is important to be able to manipulate the data into a "usable" format. This is often referred to as making sure the data is "tidy", meaning each column is a variable, each row is an observation, and each cell has a single value. To accomplish this task we will use the `tidyr` library. First though, lets look at the `population` dataset that we will be working with. I have filtered it so only the first 5 years are present for each country.
+
+
+```{r}
+pop1 <- population |> filter(year %in% c(1995,1996,1997,1998,1999))
+pop1
+```
+
+### Pivot Wider
+
+As we can see that the dataset is not tidy because the information for one observation (a country) is spread across multiple rows. We’d like all of a country’s values to live on the same row. To fix this we can do what we call "pivoting wider". This will take the take the categorical data in a single column and turn it into column headers while the values from  the other column are matched up to the observation and column header. In the code below we first use the `mutate()` and `unite()` function to alter the years so that a letter is present, this is because column names cannot start with a number in R unless we put them in quotes. To avoid constantly typing quotes later, we’re prepending a ‘y’ to the year.
+
+```{r}
+pop1 |> mutate(y="y") |> unite("year", c(y, year)) |>
+    pivot_wider(names_from = year, values_from = population)
+```
+We would consider the output above to now be tidy because all values associated with a country are now in the same row. 
+
+### Pivot Longer
+
+Since pivoting wider takes values in a column and turns them into column headers, pivoting longer will take the column headers the transform them into columns themselves. Notice that pivot_longer takes the year columns (y_1995, y_1996, ...) and stacks them into two columns: one for year and one for population. This gets us back to the original tall format. 
+
+```{r}
+pop1 |> mutate(y="y") |> unite("year", c(y, year)) |>
+    pivot_wider(names_from = year, values_from = population) |>
+    pivot_longer(y_1995:y_1999, names_to = "year", values_to = "population")
+```
+

@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.29">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>1&nbsp; Data Exploration Refresher – Data-330-Book</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./index.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-0815c480559380816a4d1ea211a47e91.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-364982630eef5352dd1537128a8ed5cb.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./Lecture-1.html"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Data Exploration Refresher</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Data-330-Book</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Lecture-1.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Data Exploration Refresher</span></span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#dplyr" id="toc-dplyr" class="nav-link active" data-scroll-target="#dplyr"><span class="header-section-number">1.1</span> Dplyr</a>
+  <ul class="collapse">
+  <li><a href="#select" id="toc-select" class="nav-link" data-scroll-target="#select"><span class="header-section-number">1.1.1</span> Select</a></li>
+  <li><a href="#rename" id="toc-rename" class="nav-link" data-scroll-target="#rename"><span class="header-section-number">1.1.2</span> Rename</a></li>
+  <li><a href="#filter" id="toc-filter" class="nav-link" data-scroll-target="#filter"><span class="header-section-number">1.1.3</span> Filter</a></li>
+  <li><a href="#mutate" id="toc-mutate" class="nav-link" data-scroll-target="#mutate"><span class="header-section-number">1.1.4</span> Mutate</a></li>
+  <li><a href="#arrange" id="toc-arrange" class="nav-link" data-scroll-target="#arrange"><span class="header-section-number">1.1.5</span> Arrange</a></li>
+  <li><a href="#summarise" id="toc-summarise" class="nav-link" data-scroll-target="#summarise"><span class="header-section-number">1.1.6</span> Summarise</a></li>
+  <li><a href="#group-by" id="toc-group-by" class="nav-link" data-scroll-target="#group-by"><span class="header-section-number">1.1.7</span> Group By</a></li>
+  </ul></li>
+  <li><a href="#tidyr" id="toc-tidyr" class="nav-link" data-scroll-target="#tidyr"><span class="header-section-number">1.2</span> Tidyr</a>
+  <ul class="collapse">
+  <li><a href="#pivot-wider" id="toc-pivot-wider" class="nav-link" data-scroll-target="#pivot-wider"><span class="header-section-number">1.2.1</span> Pivot Wider</a></li>
+  <li><a href="#pivot-longer" id="toc-pivot-longer" class="nav-link" data-scroll-target="#pivot-longer"><span class="header-section-number">1.2.2</span> Pivot Longer</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Data Exploration Refresher</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>So far in your data science journey you have experienced cleaning data, visualizing data, communicating the data, and maybe even modeling the data. This is typically what we call the , an iterative process where we acquire, clean, explore, model, and communicate the data. Throughout this course we will aim to accomplish all of these tasks using more sophisticated methods. Before we dive too far into Data Wrangling we should probably refresh ourselves on how best to clean and transform a dataset using and . This lecture will be requiring you to have the <code>tidyr</code>, <code>dplyr</code> and <code>MSMU</code> libraries already installed, so if you have not then you will need to do so by using the <code>install.packages("LIBRARY_NAME")</code> command.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(MSMU)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="dplyr" class="level2" data-number="1.1">
+<h2 data-number="1.1" class="anchored" data-anchor-id="dplyr"><span class="header-section-number">1.1</span> Dplyr</h2>
+<p>The <code>dplyr</code> library contains powerful tools that make cleaning, sorting, filtering, and manipulating datasets easy. To see this in action we will look at the <em>airquality</em> dataset which is available in base R. Before we dive into the functions, we should remind ourselves that the <code>|&gt;</code> pipe function allows us to take a dataframe and pass it into a function without having to specify the dataframe. Think of the pipe as saying ‘and then.’ We take this dataset, and then we select these columns, and then we rename one of them, and then…. This makes the code much cleaner and easier to interpret/write.</p>
+<section id="select" class="level3" data-number="1.1.1">
+<h3 data-number="1.1.1" class="anchored" data-anchor-id="select"><span class="header-section-number">1.1.1</span> Select</h3>
+<p>The first function we should familiarize ourselves with is the <code>select()</code> function, which allows us to <em>select</em> which columns we want to include in the dataframe. In the code below we can see that original dataset had 17 columns, but knowing that all were not vital for us we only selected 5 that we knew we were going to work with.</p>
+<!--
+airquality <- tibble(airquality)
+
+head(airquality)
+
+airquality |> filter(Wind > 17)
+
+airquality |> filter(Wind > 17 | Ozone <= 7)
+
+airquality |> filter(Wind > 17 , Ozone <= 7)
+
+
+airquality |> filter(Wind > 17) |> select(Month, Day, Wind, Temp)
+-->
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>county_data <span class="ot">&lt;-</span> <span class="fu">tibble</span>(county_data)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>county_data</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3,142 × 17
+   state   name        fips    pop households median_age age_over_18 age_over_65
+   &lt;chr&gt;   &lt;chr&gt;      &lt;int&gt;  &lt;int&gt;      &lt;int&gt;      &lt;dbl&gt;       &lt;dbl&gt;       &lt;dbl&gt;
+ 1 Alabama Autauga C…  1001  55380      21397       38.2        76.2        15  
+ 2 Alabama Baldwin C…  1003 212830      80930       43          78.3        20  
+ 3 Alabama Barbour C…  1005  25361       9345       40.4        79.1        18.6
+ 4 Alabama Bibb Coun…  1007  22493       6891       40.9        79.4        15.9
+ 5 Alabama Blount Co…  1009  57681      20847       40.7        76.8        17.9
+ 6 Alabama Bullock C…  1011  10248       3521       40.2        79.2        16  
+ 7 Alabama Butler Co…  1013  19828       6506       40.8        77.5        19.7
+ 8 Alabama Calhoun C…  1015 114618      44605       39.6        78.2        17.2
+ 9 Alabama Chambers …  1017  33660      13448       42          79          19.2
+10 Alabama Cherokee …  1019  25903      10737       46.5        79.8        22.4
+# ℹ 3,132 more rows
+# ℹ 9 more variables: hs_grad &lt;dbl&gt;, bachelors &lt;dbl&gt;, white &lt;dbl&gt;, black &lt;dbl&gt;,
+#   hispanic &lt;dbl&gt;, household_has_smartphone &lt;dbl&gt;,
+#   mean_household_income &lt;int&gt;, median_household_income &lt;int&gt;,
+#   unemployment_rate &lt;dbl&gt;</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>county_data <span class="sc">|&gt;</span> <span class="fu">select</span>(state, name, pop, bachelors, median_household_income)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3,142 × 5
+   state   name               pop bachelors median_household_income
+   &lt;chr&gt;   &lt;chr&gt;            &lt;int&gt;     &lt;dbl&gt;                   &lt;int&gt;
+ 1 Alabama Autauga County   55380      26.6                   58731
+ 2 Alabama Baldwin County  212830      31.9                   58320
+ 3 Alabama Barbour County   25361      11.6                   32525
+ 4 Alabama Bibb County      22493      10.4                   47542
+ 5 Alabama Blount County    57681      13.1                   49358
+ 6 Alabama Bullock County   10248      12.1                   37785
+ 7 Alabama Butler County    19828      16.1                   40688
+ 8 Alabama Calhoun County  114618      18.5                   47255
+ 9 Alabama Chambers County  33660      13.3                   42289
+10 Alabama Cherokee County  25903      12.8                   41919
+# ℹ 3,132 more rows</code></pre>
+</div>
+</div>
+</section>
+<section id="rename" class="level3" data-number="1.1.2">
+<h3 data-number="1.1.2" class="anchored" data-anchor-id="rename"><span class="header-section-number">1.1.2</span> Rename</h3>
+<p>Another command which might be useful for us is the <code>rename()</code> function, which allows us to rename a column (who would have thought?!?). In the code below we can see that we have renamed the “median_household_income” to “med_income”. This makes it easier to reference later as we will not have to type in the long name anymore. Also notice that we start with a dataframe called <code>county_data</code>, which we then pipe a function to create a new dataframe with only 5 columns selected, which we then pipe into a function to create a new dataframe with the “median_household_income” column renamed. All of this to say that we can (and will) have lines of code that utilize multiple functions and pipes. It should also be noted that what we have made is a temporary dataframe, if we want to save it then we will need to save it to a variable (which we do below).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>county_data <span class="sc">|&gt;</span> <span class="fu">select</span>(state, name, pop, bachelors, median_household_income) <span class="sc">|&gt;</span> </span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">rename</span>(<span class="at">med_income =</span> median_household_income)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3,142 × 5
+   state   name               pop bachelors med_income
+   &lt;chr&gt;   &lt;chr&gt;            &lt;int&gt;     &lt;dbl&gt;      &lt;int&gt;
+ 1 Alabama Autauga County   55380      26.6      58731
+ 2 Alabama Baldwin County  212830      31.9      58320
+ 3 Alabama Barbour County   25361      11.6      32525
+ 4 Alabama Bibb County      22493      10.4      47542
+ 5 Alabama Blount County    57681      13.1      49358
+ 6 Alabama Bullock County   10248      12.1      37785
+ 7 Alabama Butler County    19828      16.1      40688
+ 8 Alabama Calhoun County  114618      18.5      47255
+ 9 Alabama Chambers County  33660      13.3      42289
+10 Alabama Cherokee County  25903      12.8      41919
+# ℹ 3,132 more rows</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>cd1 <span class="ot">&lt;-</span> county_data <span class="sc">|&gt;</span> <span class="fu">select</span>(state, name, pop, bachelors, median_household_income) <span class="sc">|&gt;</span> </span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>           <span class="fu">rename</span>(<span class="at">med_income =</span> median_household_income)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>cd1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3,142 × 5
+   state   name               pop bachelors med_income
+   &lt;chr&gt;   &lt;chr&gt;            &lt;int&gt;     &lt;dbl&gt;      &lt;int&gt;
+ 1 Alabama Autauga County   55380      26.6      58731
+ 2 Alabama Baldwin County  212830      31.9      58320
+ 3 Alabama Barbour County   25361      11.6      32525
+ 4 Alabama Bibb County      22493      10.4      47542
+ 5 Alabama Blount County    57681      13.1      49358
+ 6 Alabama Bullock County   10248      12.1      37785
+ 7 Alabama Butler County    19828      16.1      40688
+ 8 Alabama Calhoun County  114618      18.5      47255
+ 9 Alabama Chambers County  33660      13.3      42289
+10 Alabama Cherokee County  25903      12.8      41919
+# ℹ 3,132 more rows</code></pre>
+</div>
+</div>
+</section>
+<section id="filter" class="level3" data-number="1.1.3">
+<h3 data-number="1.1.3" class="anchored" data-anchor-id="filter"><span class="header-section-number">1.1.3</span> Filter</h3>
+<p>The <code>filter()</code> function will allow us to filter a dataset based on one or multiple conditions. In the code below, we want to only show the counties whose median income is greater than $120,000. While we could do this with index-selection brackets, using the <code>filter()</code> is probably a little easier. This does not mean that we should forget our basic R commands and logic!</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>cd1[cd1<span class="sc">$</span>med_income <span class="sc">&gt;</span> <span class="dv">120000</span>,]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 8 × 5
+  state      name                   pop bachelors med_income
+  &lt;chr&gt;      &lt;chr&gt;                &lt;int&gt;     &lt;dbl&gt;      &lt;int&gt;
+1 California San Mateo County    767423      51       122641
+2 California Santa Clara County 1927470      52.4     124055
+3 Maryland   Howard County       318855      62.6     121160
+4 New Mexico Los Alamos County    18625      67.4     121324
+5 Virginia   Arlington County    233464      75.3     120071
+6 Virginia   Fairfax County     1145862      61.6     124831
+7 Virginia   Loudoun County      395134      61.3     142299
+8 Virginia   Falls Church city    14128      77.6     127610</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>cd1 <span class="sc">|&gt;</span> <span class="fu">filter</span>(med_income <span class="sc">&gt;</span> <span class="dv">120000</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 8 × 5
+  state      name                   pop bachelors med_income
+  &lt;chr&gt;      &lt;chr&gt;                &lt;int&gt;     &lt;dbl&gt;      &lt;int&gt;
+1 California San Mateo County    767423      51       122641
+2 California Santa Clara County 1927470      52.4     124055
+3 Maryland   Howard County       318855      62.6     121160
+4 New Mexico Los Alamos County    18625      67.4     121324
+5 Virginia   Arlington County    233464      75.3     120071
+6 Virginia   Fairfax County     1145862      61.6     124831
+7 Virginia   Loudoun County      395134      61.3     142299
+8 Virginia   Falls Church city    14128      77.6     127610</code></pre>
+</div>
+</div>
+<p>We can pass in multiple conditionals into the command as well. Below we can see the counties with either the median income above $120,000 <strong>or</strong> (denoted by |) more than 60% having a bachelors degree. If we put a comma instead that signifies the median income above $120,000 <strong>and</strong> more than 60% having a bachelors degree.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>cd1 <span class="sc">|&gt;</span> <span class="fu">filter</span>(med_income <span class="sc">&gt;</span> <span class="dv">120000</span> <span class="sc">|</span> bachelors <span class="sc">&gt;</span> <span class="dv">60</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 13 × 5
+   state      name                   pop bachelors med_income
+   &lt;chr&gt;      &lt;chr&gt;                &lt;int&gt;     &lt;dbl&gt;      &lt;int&gt;
+ 1 California San Mateo County    767423      51       122641
+ 2 California Santa Clara County 1927470      52.4     124055
+ 3 Colorado   Boulder County      322510      62.1      83019
+ 4 Colorado   Pitkin County        17926      60.8      78935
+ 5 Maryland   Howard County       318855      62.6     121160
+ 6 New Mexico Los Alamos County    18625      67.4     121324
+ 7 New York   New York County    1631993      61.3      86553
+ 8 Virginia   Arlington County    233464      75.3     120071
+ 9 Virginia   Fairfax County     1145862      61.6     124831
+10 Virginia   Loudoun County      395134      61.3     142299
+11 Virginia   Alexandria city     157613      63.1     100939
+12 Virginia   Fairfax city         23531      60.8     116979
+13 Virginia   Falls Church city    14128      77.6     127610</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>cd1 <span class="sc">|&gt;</span> <span class="fu">filter</span>(med_income <span class="sc">&gt;</span> <span class="dv">120000</span> , bachelors <span class="sc">&gt;</span> <span class="dv">60</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 5
+  state      name                  pop bachelors med_income
+  &lt;chr&gt;      &lt;chr&gt;               &lt;int&gt;     &lt;dbl&gt;      &lt;int&gt;
+1 Maryland   Howard County      318855      62.6     121160
+2 New Mexico Los Alamos County   18625      67.4     121324
+3 Virginia   Arlington County   233464      75.3     120071
+4 Virginia   Fairfax County    1145862      61.6     124831
+5 Virginia   Loudoun County     395134      61.3     142299
+6 Virginia   Falls Church city   14128      77.6     127610</code></pre>
+</div>
+</div>
+</section>
+<section id="mutate" class="level3" data-number="1.1.4">
+<h3 data-number="1.1.4" class="anchored" data-anchor-id="mutate"><span class="header-section-number">1.1.4</span> Mutate</h3>
+<p>If we wish to alter (some may even say mutate) the dataset then we can use the <code>mutate()</code> function to accomplish this task. The function allows us to create a new column based on some value or some expression. If we want to alter a column that already exists then we can reference the column and it will be overwritten. In the example below we create a new column to calculate the percentage of people in the county who do not have a bachelors degree.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>cd1 <span class="sc">|&gt;</span> <span class="fu">filter</span>(med_income <span class="sc">&gt;</span> <span class="dv">120000</span> , bachelors <span class="sc">&gt;</span> <span class="dv">60</span>) <span class="sc">|&gt;</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">no_bach =</span> <span class="dv">100</span> <span class="sc">-</span> bachelors)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 6
+  state      name                  pop bachelors med_income no_bach
+  &lt;chr&gt;      &lt;chr&gt;               &lt;int&gt;     &lt;dbl&gt;      &lt;int&gt;   &lt;dbl&gt;
+1 Maryland   Howard County      318855      62.6     121160    37.4
+2 New Mexico Los Alamos County   18625      67.4     121324    32.6
+3 Virginia   Arlington County   233464      75.3     120071    24.7
+4 Virginia   Fairfax County    1145862      61.6     124831    38.4
+5 Virginia   Loudoun County     395134      61.3     142299    38.7
+6 Virginia   Falls Church city   14128      77.6     127610    22.4</code></pre>
+</div>
+</div>
+</section>
+<section id="arrange" class="level3" data-number="1.1.5">
+<h3 data-number="1.1.5" class="anchored" data-anchor-id="arrange"><span class="header-section-number">1.1.5</span> Arrange</h3>
+<p>Occasionally we might want to sort a dataset so that the values are in order from least to greatest (or greatest to least). To do this we can use the <code>arrange()</code> function. It should be noted that we can arrange on multiple variables, meaning if there is a tie in the first variable then the next variable is used to sort as the tie break. If we want to put the items in decreasing order then we can specify that by using the <code>desc()</code> function.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>cd1 <span class="sc">|&gt;</span> <span class="fu">filter</span>(med_income <span class="sc">&gt;</span> <span class="dv">120000</span> , bachelors <span class="sc">&gt;</span> <span class="dv">60</span>) <span class="sc">|&gt;</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">no_bach =</span> <span class="dv">100</span> <span class="sc">-</span> bachelors) <span class="sc">|&gt;</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">arrange</span>(<span class="fu">desc</span>(pop))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 6
+  state      name                  pop bachelors med_income no_bach
+  &lt;chr&gt;      &lt;chr&gt;               &lt;int&gt;     &lt;dbl&gt;      &lt;int&gt;   &lt;dbl&gt;
+1 Virginia   Fairfax County    1145862      61.6     124831    38.4
+2 Virginia   Loudoun County     395134      61.3     142299    38.7
+3 Maryland   Howard County      318855      62.6     121160    37.4
+4 Virginia   Arlington County   233464      75.3     120071    24.7
+5 New Mexico Los Alamos County   18625      67.4     121324    32.6
+6 Virginia   Falls Church city   14128      77.6     127610    22.4</code></pre>
+</div>
+</div>
+</section>
+<section id="summarise" class="level3" data-number="1.1.6">
+<h3 data-number="1.1.6" class="anchored" data-anchor-id="summarise"><span class="header-section-number">1.1.6</span> Summarise</h3>
+<p>A common task we might encounter as data scientists is to calculate different statistics to learn more about the dataset. To do this, we can use the <code>summarise()</code> function. We can pass multiple statistics we want to calculate into the function.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>cd1 <span class="sc">|&gt;</span> <span class="fu">summarise</span>(<span class="at">total_pop =</span> <span class="fu">sum</span>(pop), <span class="at">avg_income =</span> <span class="fu">mean</span>(med_income))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 2
+  total_pop avg_income
+      &lt;int&gt;      &lt;dbl&gt;
+1 324697795     53476.</code></pre>
+</div>
+</div>
+</section>
+<section id="group-by" class="level3" data-number="1.1.7">
+<h3 data-number="1.1.7" class="anchored" data-anchor-id="group-by"><span class="header-section-number">1.1.7</span> Group By</h3>
+<p>Calculating statistics on a whole dataset is nice, but it is also beneficial to calculate the statistics based on some categorical characteristic within the dataset. To do this we can use the <code>group_by()</code> function which (behind the scenes) will essentially make small datasets for each characteristic. Using the <code>summarise()</code> with this allows us to make calculations on each group. In the example below we calculate the total population for each state along with the average median income level for each state.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>cd1 <span class="sc">|&gt;</span> <span class="fu">group_by</span>(state) <span class="sc">|&gt;</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarise</span>(<span class="at">total_pop =</span> <span class="fu">sum</span>(pop), <span class="at">avg_income =</span> <span class="fu">mean</span>(med_income))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 51 × 3
+   state                total_pop avg_income
+   &lt;chr&gt;                    &lt;int&gt;      &lt;dbl&gt;
+ 1 Alabama                4876250     43575.
+ 2 Alaska                  737068     67789.
+ 3 Arizona                7050299     48990.
+ 4 Arkansas               2999370     42237.
+ 5 California            39283497     67714.
+ 6 Colorado               5610349     58795.
+ 7 Connecticut            3575074     79201.
+ 8 Delaware                957248     65988 
+ 9 District of Columbia    692683     86420 
+10 Florida               20901636     51290.
+# ℹ 41 more rows</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="tidyr" class="level2" data-number="1.2">
+<h2 data-number="1.2" class="anchored" data-anchor-id="tidyr"><span class="header-section-number">1.2</span> Tidyr</h2>
+<p>When dealing with data, it is important to be able to manipulate the data into a “usable” format. This is often referred to as making sure the data is “tidy”, meaning each column is a variable, each row is an observation, and each cell has a single value. To accomplish this task we will use the <code>tidyr</code> library. First though, lets look at the <code>population</code> dataset that we will be working with. I have filtered it so only the first 5 years are present for each country.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>pop1 <span class="ot">&lt;-</span> population <span class="sc">|&gt;</span> <span class="fu">filter</span>(year <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">1995</span>,<span class="dv">1996</span>,<span class="dv">1997</span>,<span class="dv">1998</span>,<span class="dv">1999</span>))</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>pop1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1,060 × 3
+   country      year population
+   &lt;chr&gt;       &lt;dbl&gt;      &lt;dbl&gt;
+ 1 Afghanistan  1995   17586073
+ 2 Afghanistan  1996   18415307
+ 3 Afghanistan  1997   19021226
+ 4 Afghanistan  1998   19496836
+ 5 Afghanistan  1999   19987071
+ 6 Albania      1995    3357858
+ 7 Albania      1996    3341043
+ 8 Albania      1997    3331317
+ 9 Albania      1998    3325456
+10 Albania      1999    3317941
+# ℹ 1,050 more rows</code></pre>
+</div>
+</div>
+<section id="pivot-wider" class="level3" data-number="1.2.1">
+<h3 data-number="1.2.1" class="anchored" data-anchor-id="pivot-wider"><span class="header-section-number">1.2.1</span> Pivot Wider</h3>
+<p>As we can see that the dataset is not tidy because the information for one observation (a country) is spread across multiple rows. We’d like all of a country’s values to live on the same row. To fix this we can do what we call “pivoting wider”. This will take the take the categorical data in a single column and turn it into column headers while the values from the other column are matched up to the observation and column header. In the code below we first use the <code>mutate()</code> and <code>unite()</code> function to alter the years so that a letter is present, this is because column names cannot start with a number in R unless we put them in quotes. To avoid constantly typing quotes later, we’re prepending a ‘y’ to the year.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>pop1 <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">y=</span><span class="st">"y"</span>) <span class="sc">|&gt;</span> <span class="fu">unite</span>(<span class="st">"year"</span>, <span class="fu">c</span>(y, year)) <span class="sc">|&gt;</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> year, <span class="at">values_from =</span> population)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 212 × 6
+   country               y_1995   y_1996   y_1997   y_1998   y_1999
+   &lt;chr&gt;                  &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
+ 1 Afghanistan         17586073 18415307 19021226 19496836 19987071
+ 2 Albania              3357858  3341043  3331317  3325456  3317941
+ 3 Algeria             29315463 29845208 30345466 30820435 31276295
+ 4 American Samoa         52874    53926    54942    55899    56768
+ 5 Andorra                63854    64274    64090    63799    64084
+ 6 Angola              12104952 12451945 12791388 13137542 13510616
+ 7 Anguilla                9807    10063    10305    10545    10797
+ 8 Antigua and Barbuda    68349    70245    72232    74206    76041
+ 9 Argentina           34833168 35264070 35690778 36109342 36514558
+10 Armenia              3223173  3173425  3137652  3112958  3093820
+# ℹ 202 more rows</code></pre>
+</div>
+</div>
+<p>We would consider the output above to now be tidy because all values associated with a country are now in the same row.</p>
+</section>
+<section id="pivot-longer" class="level3" data-number="1.2.2">
+<h3 data-number="1.2.2" class="anchored" data-anchor-id="pivot-longer"><span class="header-section-number">1.2.2</span> Pivot Longer</h3>
+<p>Since pivoting wider takes values in a column and turns them into column headers, pivoting longer will take the column headers the transform them into columns themselves. Notice that pivot_longer takes the year columns (y_1995, y_1996, …) and stacks them into two columns: one for year and one for population. This gets us back to the original tall format.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>pop1 <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">y=</span><span class="st">"y"</span>) <span class="sc">|&gt;</span> <span class="fu">unite</span>(<span class="st">"year"</span>, <span class="fu">c</span>(y, year)) <span class="sc">|&gt;</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> year, <span class="at">values_from =</span> population) <span class="sc">|&gt;</span></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">pivot_longer</span>(y_1995<span class="sc">:</span>y_1999, <span class="at">names_to =</span> <span class="st">"year"</span>, <span class="at">values_to =</span> <span class="st">"population"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1,060 × 3
+   country     year   population
+   &lt;chr&gt;       &lt;chr&gt;       &lt;dbl&gt;
+ 1 Afghanistan y_1995   17586073
+ 2 Afghanistan y_1996   18415307
+ 3 Afghanistan y_1997   19021226
+ 4 Afghanistan y_1998   19496836
+ 5 Afghanistan y_1999   19987071
+ 6 Albania     y_1995    3357858
+ 7 Albania     y_1996    3341043
+ 8 Albania     y_1997    3331317
+ 9 Albania     y_1998    3325456
+10 Albania     y_1999    3317941
+# ℹ 1,050 more rows</code></pre>
+</div>
+</div>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./index.html" class="pagination-link" aria-label="Preface">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Preface</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

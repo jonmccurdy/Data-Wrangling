@@ -1,0 +1,25 @@
+project:
+  type: book
+
+book:
+  title: "Data-330-Book"
+  author: "Norah Jones"
+  date: "8/19/2025"
+  chapters:
+    - index.qmd
+    - Lecture-1.qmd
+
+bibliography: references.bib
+
+format:
+  html:
+    theme:
+      - cosmo
+      - brand
+    css: 
+      - style.css
+  pdf:
+    documentclass: scrreprt
+
+editor: visual
+
