@@ -1,0 +1,731 @@
+% Options for packages loaded elsewhere
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\PassOptionsToPackage{dvipsnames,svgnames,x11names}{xcolor}
+%
+\documentclass[
+  letterpaper,
+  DIV=11,
+  numbers=noendperiod]{scrreprt}
+\usepackage{xcolor}
+\usepackage{amsmath,amssymb}
+\setcounter{secnumdepth}{5}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+% Make \paragraph and \subparagraph free-standing
+\makeatletter
+\ifx\paragraph\undefined\else
+  \let\oldparagraph\paragraph
+  \renewcommand{\paragraph}{
+    \@ifstar
+      \xxxParagraphStar
+      \xxxParagraphNoStar
+  }
+  \newcommand{\xxxParagraphStar}[1]{\oldparagraph*{#1}\mbox{}}
+  \newcommand{\xxxParagraphNoStar}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+  \let\oldsubparagraph\subparagraph
+  \renewcommand{\subparagraph}{
+    \@ifstar
+      \xxxSubParagraphStar
+      \xxxSubParagraphNoStar
+  }
+  \newcommand{\xxxSubParagraphStar}[1]{\oldsubparagraph*{#1}\mbox{}}
+  \newcommand{\xxxSubParagraphNoStar}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+\makeatother
+
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{241,243,245}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{#1}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.40,0.45,0.13}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
+\newcommand{\BuiltInTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{#1}}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.13,0.47,0.30}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{#1}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{\textit{#1}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{\textit{#1}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
+\newcommand{\ExtensionTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{#1}}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.28,0.35,0.67}{#1}}
+\newcommand{\ImportTok}[1]{\textcolor[rgb]{0.00,0.46,0.62}{#1}}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{#1}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{#1}}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{#1}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
+\newcommand{\RegionMarkerTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{#1}}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.13,0.47,0.30}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.13,0.47,0.30}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.07,0.07,0.07}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.13,0.47,0.30}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{\textit{#1}}}
+
+\usepackage{longtable,booktabs,array}
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx}
+\makeatletter
+\newsavebox\pandoc@box
+\newcommand*\pandocbounded[1]{% scales image to fit in text height/width
+  \sbox\pandoc@box{#1}%
+  \Gscale@div\@tempa{\textheight}{\dimexpr\ht\pandoc@box+\dp\pandoc@box\relax}%
+  \Gscale@div\@tempb{\linewidth}{\wd\pandoc@box}%
+  \ifdim\@tempb\p@<\@tempa\p@\let\@tempa\@tempb\fi% select the smaller of both
+  \ifdim\@tempa\p@<\p@\scalebox{\@tempa}{\usebox\pandoc@box}%
+  \else\usebox{\pandoc@box}%
+  \fi%
+}
+% Set default figure placement to htbp
+\def\fps@figure{htbp}
+\makeatother
+
+
+
+
+
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+
+
+
+ 
+
+
+\KOMAoption{captions}{tableheading}
+\makeatletter
+\@ifpackageloaded{bookmark}{}{\usepackage{bookmark}}
+\makeatother
+\makeatletter
+\@ifpackageloaded{caption}{}{\usepackage{caption}}
+\AtBeginDocument{%
+\ifdefined\contentsname
+  \renewcommand*\contentsname{Table of contents}
+\else
+  \newcommand\contentsname{Table of contents}
+\fi
+\ifdefined\listfigurename
+  \renewcommand*\listfigurename{List of Figures}
+\else
+  \newcommand\listfigurename{List of Figures}
+\fi
+\ifdefined\listtablename
+  \renewcommand*\listtablename{List of Tables}
+\else
+  \newcommand\listtablename{List of Tables}
+\fi
+\ifdefined\figurename
+  \renewcommand*\figurename{Figure}
+\else
+  \newcommand\figurename{Figure}
+\fi
+\ifdefined\tablename
+  \renewcommand*\tablename{Table}
+\else
+  \newcommand\tablename{Table}
+\fi
+}
+\@ifpackageloaded{float}{}{\usepackage{float}}
+\floatstyle{ruled}
+\@ifundefined{c@chapter}{\newfloat{codelisting}{h}{lop}}{\newfloat{codelisting}{h}{lop}[chapter]}
+\floatname{codelisting}{Listing}
+\newcommand*\listoflistings{\listof{codelisting}{List of Listings}}
+\makeatother
+\makeatletter
+\makeatother
+\makeatletter
+\@ifpackageloaded{caption}{}{\usepackage{caption}}
+\@ifpackageloaded{subcaption}{}{\usepackage{subcaption}}
+\makeatother
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  pdftitle={Data-330-Book},
+  pdfauthor={Norah Jones},
+  colorlinks=true,
+  linkcolor={blue},
+  filecolor={Maroon},
+  citecolor={Blue},
+  urlcolor={Blue},
+  pdfcreator={LaTeX via pandoc}}
+
+
+\title{Data-330-Book}
+\author{Norah Jones}
+\date{2025-08-19}
+\begin{document}
+\maketitle
+
+\renewcommand*\contentsname{Table of contents}
+{
+\hypersetup{linkcolor=}
+\setcounter{tocdepth}{2}
+\tableofcontents
+}
+
+\bookmarksetup{startatroot}
+
+\chapter*{Preface}\label{preface}
+\addcontentsline{toc}{chapter}{Preface}
+
+\markboth{Preface}{Preface}
+
+This is a Quarto book.
+
+To learn more about Quarto books visit
+\url{https://quarto.org/docs/books}.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\DecValTok{1} \SpecialCharTok{+} \DecValTok{1}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+[1] 2
+\end{verbatim}
+
+\bookmarksetup{startatroot}
+
+\chapter{Data Exploration Refresher}\label{data-exploration-refresher}
+
+So far in your data science journey you have experienced cleaning data,
+visualizing data, communicating the data, and maybe even modeling the
+data. This is typically what we call the
+\textit{Data Science Life-cycle}, an iterative process where we acquire,
+clean, explore, model, and communicate the data. Throughout this course
+we will aim to accomplish all of these tasks using more sophisticated
+methods. Before we dive too far into Data Wrangling we should probably
+refresh ourselves on how best to clean and transform a dataset using
+\textit{tidyr} and \textit{dplyr}. This lecture will be requiring you to
+have the \texttt{tidyr}, \texttt{dplyr} and \texttt{MSMU} libraries
+already installed, so if you have not then you will need to do so by
+using the \texttt{install.packages("LIBRARY\_NAME")} command.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(dplyr)}
+\FunctionTok{library}\NormalTok{(tidyr)}
+\FunctionTok{library}\NormalTok{(MSMU)}
+\end{Highlighting}
+\end{Shaded}
+
+\section{Dplyr}\label{dplyr}
+
+The \texttt{dplyr} library contains powerful tools that make cleaning,
+sorting, filtering, and manipulating datasets easy. To see this in
+action we will look at the \emph{airquality} dataset which is available
+in base R. Before we dive into the functions, we should remind ourselves
+that the \texttt{\textbar{}\textgreater{}} pipe function allows us to
+take a dataframe and pass it into a function without having to specify
+the dataframe. Think of the pipe as saying `and then.' We take this
+dataset, and then we select these columns, and then we rename one of
+them, and then\ldots. This makes the code much cleaner and easier to
+interpret/write.
+
+\subsection{Select}\label{select}
+
+The first function we should familiarize ourselves with is the
+\texttt{select()} function, which allows us to \emph{select} which
+columns we want to include in the dataframe. In the code below we can
+see that original dataset had 17 columns, but knowing that all were not
+vital for us we only selected 5 that we knew we were going to work with.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{county\_data }\OtherTok{\textless{}{-}} \FunctionTok{tibble}\NormalTok{(county\_data)}
+
+\NormalTok{county\_data}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+# A tibble: 3,142 x 17
+   state   name        fips    pop households median_age age_over_18 age_over_65
+   <chr>   <chr>      <int>  <int>      <int>      <dbl>       <dbl>       <dbl>
+ 1 Alabama Autauga C~  1001  55380      21397       38.2        76.2        15  
+ 2 Alabama Baldwin C~  1003 212830      80930       43          78.3        20  
+ 3 Alabama Barbour C~  1005  25361       9345       40.4        79.1        18.6
+ 4 Alabama Bibb Coun~  1007  22493       6891       40.9        79.4        15.9
+ 5 Alabama Blount Co~  1009  57681      20847       40.7        76.8        17.9
+ 6 Alabama Bullock C~  1011  10248       3521       40.2        79.2        16  
+ 7 Alabama Butler Co~  1013  19828       6506       40.8        77.5        19.7
+ 8 Alabama Calhoun C~  1015 114618      44605       39.6        78.2        17.2
+ 9 Alabama Chambers ~  1017  33660      13448       42          79          19.2
+10 Alabama Cherokee ~  1019  25903      10737       46.5        79.8        22.4
+# i 3,132 more rows
+# i 9 more variables: hs_grad <dbl>, bachelors <dbl>, white <dbl>, black <dbl>,
+#   hispanic <dbl>, household_has_smartphone <dbl>,
+#   mean_household_income <int>, median_household_income <int>,
+#   unemployment_rate <dbl>
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{county\_data }\SpecialCharTok{|\textgreater{}} \FunctionTok{select}\NormalTok{(state, name, pop, bachelors, median\_household\_income)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+# A tibble: 3,142 x 5
+   state   name               pop bachelors median_household_income
+   <chr>   <chr>            <int>     <dbl>                   <int>
+ 1 Alabama Autauga County   55380      26.6                   58731
+ 2 Alabama Baldwin County  212830      31.9                   58320
+ 3 Alabama Barbour County   25361      11.6                   32525
+ 4 Alabama Bibb County      22493      10.4                   47542
+ 5 Alabama Blount County    57681      13.1                   49358
+ 6 Alabama Bullock County   10248      12.1                   37785
+ 7 Alabama Butler County    19828      16.1                   40688
+ 8 Alabama Calhoun County  114618      18.5                   47255
+ 9 Alabama Chambers County  33660      13.3                   42289
+10 Alabama Cherokee County  25903      12.8                   41919
+# i 3,132 more rows
+\end{verbatim}
+
+\subsection{Rename}\label{rename}
+
+Another command which might be useful for us is the \texttt{rename()}
+function, which allows us to rename a column (who would have
+thought?!?). In the code below we can see that we have renamed the
+``median\_household\_income'' to ``med\_income''. This makes it easier
+to reference later as we will not have to type in the long name anymore.
+Also notice that we start with a dataframe called \texttt{county\_data},
+which we then pipe a function to create a new dataframe with only 5
+columns selected, which we then pipe into a function to create a new
+dataframe with the ``median\_household\_income'' column renamed. All of
+this to say that we can (and will) have lines of code that utilize
+multiple functions and pipes. It should also be noted that what we have
+made is a temporary dataframe, if we want to save it then we will need
+to save it to a variable (which we do below).
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{county\_data }\SpecialCharTok{|\textgreater{}} \FunctionTok{select}\NormalTok{(state, name, pop, bachelors, median\_household\_income) }\SpecialCharTok{|\textgreater{}} 
+    \FunctionTok{rename}\NormalTok{(}\AttributeTok{med\_income =}\NormalTok{ median\_household\_income)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+# A tibble: 3,142 x 5
+   state   name               pop bachelors med_income
+   <chr>   <chr>            <int>     <dbl>      <int>
+ 1 Alabama Autauga County   55380      26.6      58731
+ 2 Alabama Baldwin County  212830      31.9      58320
+ 3 Alabama Barbour County   25361      11.6      32525
+ 4 Alabama Bibb County      22493      10.4      47542
+ 5 Alabama Blount County    57681      13.1      49358
+ 6 Alabama Bullock County   10248      12.1      37785
+ 7 Alabama Butler County    19828      16.1      40688
+ 8 Alabama Calhoun County  114618      18.5      47255
+ 9 Alabama Chambers County  33660      13.3      42289
+10 Alabama Cherokee County  25903      12.8      41919
+# i 3,132 more rows
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{cd1 }\OtherTok{\textless{}{-}}\NormalTok{ county\_data }\SpecialCharTok{|\textgreater{}} \FunctionTok{select}\NormalTok{(state, name, pop, bachelors, median\_household\_income) }\SpecialCharTok{|\textgreater{}} 
+           \FunctionTok{rename}\NormalTok{(}\AttributeTok{med\_income =}\NormalTok{ median\_household\_income)}
+
+\NormalTok{cd1}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+# A tibble: 3,142 x 5
+   state   name               pop bachelors med_income
+   <chr>   <chr>            <int>     <dbl>      <int>
+ 1 Alabama Autauga County   55380      26.6      58731
+ 2 Alabama Baldwin County  212830      31.9      58320
+ 3 Alabama Barbour County   25361      11.6      32525
+ 4 Alabama Bibb County      22493      10.4      47542
+ 5 Alabama Blount County    57681      13.1      49358
+ 6 Alabama Bullock County   10248      12.1      37785
+ 7 Alabama Butler County    19828      16.1      40688
+ 8 Alabama Calhoun County  114618      18.5      47255
+ 9 Alabama Chambers County  33660      13.3      42289
+10 Alabama Cherokee County  25903      12.8      41919
+# i 3,132 more rows
+\end{verbatim}
+
+\subsection{Filter}\label{filter}
+
+The \texttt{filter()} function will allow us to filter a dataset based
+on one or multiple conditions. In the code below, we want to only show
+the counties whose median income is greater than \$120,000. While we
+could do this with index-selection brackets, using the \texttt{filter()}
+is probably a little easier. This does not mean that we should forget
+our basic R commands and logic!
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{cd1[cd1}\SpecialCharTok{$}\NormalTok{med\_income }\SpecialCharTok{\textgreater{}} \DecValTok{120000}\NormalTok{,]}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+# A tibble: 8 x 5
+  state      name                   pop bachelors med_income
+  <chr>      <chr>                <int>     <dbl>      <int>
+1 California San Mateo County    767423      51       122641
+2 California Santa Clara County 1927470      52.4     124055
+3 Maryland   Howard County       318855      62.6     121160
+4 New Mexico Los Alamos County    18625      67.4     121324
+5 Virginia   Arlington County    233464      75.3     120071
+6 Virginia   Fairfax County     1145862      61.6     124831
+7 Virginia   Loudoun County      395134      61.3     142299
+8 Virginia   Falls Church city    14128      77.6     127610
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{cd1 }\SpecialCharTok{|\textgreater{}} \FunctionTok{filter}\NormalTok{(med\_income }\SpecialCharTok{\textgreater{}} \DecValTok{120000}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+# A tibble: 8 x 5
+  state      name                   pop bachelors med_income
+  <chr>      <chr>                <int>     <dbl>      <int>
+1 California San Mateo County    767423      51       122641
+2 California Santa Clara County 1927470      52.4     124055
+3 Maryland   Howard County       318855      62.6     121160
+4 New Mexico Los Alamos County    18625      67.4     121324
+5 Virginia   Arlington County    233464      75.3     120071
+6 Virginia   Fairfax County     1145862      61.6     124831
+7 Virginia   Loudoun County      395134      61.3     142299
+8 Virginia   Falls Church city    14128      77.6     127610
+\end{verbatim}
+
+We can pass in multiple conditionals into the command as well. Below we
+can see the counties with either the median income above \$120,000
+\textbf{or} (denoted by \textbar) more than 60\% having a bachelors
+degree. If we put a comma instead that signifies the median income above
+\$120,000 \textbf{and} more than 60\% having a bachelors degree.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{cd1 }\SpecialCharTok{|\textgreater{}} \FunctionTok{filter}\NormalTok{(med\_income }\SpecialCharTok{\textgreater{}} \DecValTok{120000} \SpecialCharTok{|}\NormalTok{ bachelors }\SpecialCharTok{\textgreater{}} \DecValTok{60}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+# A tibble: 13 x 5
+   state      name                   pop bachelors med_income
+   <chr>      <chr>                <int>     <dbl>      <int>
+ 1 California San Mateo County    767423      51       122641
+ 2 California Santa Clara County 1927470      52.4     124055
+ 3 Colorado   Boulder County      322510      62.1      83019
+ 4 Colorado   Pitkin County        17926      60.8      78935
+ 5 Maryland   Howard County       318855      62.6     121160
+ 6 New Mexico Los Alamos County    18625      67.4     121324
+ 7 New York   New York County    1631993      61.3      86553
+ 8 Virginia   Arlington County    233464      75.3     120071
+ 9 Virginia   Fairfax County     1145862      61.6     124831
+10 Virginia   Loudoun County      395134      61.3     142299
+11 Virginia   Alexandria city     157613      63.1     100939
+12 Virginia   Fairfax city         23531      60.8     116979
+13 Virginia   Falls Church city    14128      77.6     127610
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{cd1 }\SpecialCharTok{|\textgreater{}} \FunctionTok{filter}\NormalTok{(med\_income }\SpecialCharTok{\textgreater{}} \DecValTok{120000}\NormalTok{ , bachelors }\SpecialCharTok{\textgreater{}} \DecValTok{60}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+# A tibble: 6 x 5
+  state      name                  pop bachelors med_income
+  <chr>      <chr>               <int>     <dbl>      <int>
+1 Maryland   Howard County      318855      62.6     121160
+2 New Mexico Los Alamos County   18625      67.4     121324
+3 Virginia   Arlington County   233464      75.3     120071
+4 Virginia   Fairfax County    1145862      61.6     124831
+5 Virginia   Loudoun County     395134      61.3     142299
+6 Virginia   Falls Church city   14128      77.6     127610
+\end{verbatim}
+
+\subsection{Mutate}\label{mutate}
+
+If we wish to alter (some may even say mutate) the dataset then we can
+use the \texttt{mutate()} function to accomplish this task. The function
+allows us to create a new column based on some value or some expression.
+If we want to alter a column that already exists then we can reference
+the column and it will be overwritten. In the example below we create a
+new column to calculate the percentage of people in the county who do
+not have a bachelors degree.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{cd1 }\SpecialCharTok{|\textgreater{}} \FunctionTok{filter}\NormalTok{(med\_income }\SpecialCharTok{\textgreater{}} \DecValTok{120000}\NormalTok{ , bachelors }\SpecialCharTok{\textgreater{}} \DecValTok{60}\NormalTok{) }\SpecialCharTok{|\textgreater{}}
+    \FunctionTok{mutate}\NormalTok{(}\AttributeTok{no\_bach =} \DecValTok{100} \SpecialCharTok{{-}}\NormalTok{ bachelors)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+# A tibble: 6 x 6
+  state      name                  pop bachelors med_income no_bach
+  <chr>      <chr>               <int>     <dbl>      <int>   <dbl>
+1 Maryland   Howard County      318855      62.6     121160    37.4
+2 New Mexico Los Alamos County   18625      67.4     121324    32.6
+3 Virginia   Arlington County   233464      75.3     120071    24.7
+4 Virginia   Fairfax County    1145862      61.6     124831    38.4
+5 Virginia   Loudoun County     395134      61.3     142299    38.7
+6 Virginia   Falls Church city   14128      77.6     127610    22.4
+\end{verbatim}
+
+\subsection{Arrange}\label{arrange}
+
+Occasionally we might want to sort a dataset so that the values are in
+order from least to greatest (or greatest to least). To do this we can
+use the \texttt{arrange()} function. It should be noted that we can
+arrange on multiple variables, meaning if there is a tie in the first
+variable then the next variable is used to sort as the tie break. If we
+want to put the items in decreasing order then we can specify that by
+using the \texttt{desc()} function.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{cd1 }\SpecialCharTok{|\textgreater{}} \FunctionTok{filter}\NormalTok{(med\_income }\SpecialCharTok{\textgreater{}} \DecValTok{120000}\NormalTok{ , bachelors }\SpecialCharTok{\textgreater{}} \DecValTok{60}\NormalTok{) }\SpecialCharTok{|\textgreater{}}
+    \FunctionTok{mutate}\NormalTok{(}\AttributeTok{no\_bach =} \DecValTok{100} \SpecialCharTok{{-}}\NormalTok{ bachelors) }\SpecialCharTok{|\textgreater{}}
+    \FunctionTok{arrange}\NormalTok{(}\FunctionTok{desc}\NormalTok{(pop))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+# A tibble: 6 x 6
+  state      name                  pop bachelors med_income no_bach
+  <chr>      <chr>               <int>     <dbl>      <int>   <dbl>
+1 Virginia   Fairfax County    1145862      61.6     124831    38.4
+2 Virginia   Loudoun County     395134      61.3     142299    38.7
+3 Maryland   Howard County      318855      62.6     121160    37.4
+4 Virginia   Arlington County   233464      75.3     120071    24.7
+5 New Mexico Los Alamos County   18625      67.4     121324    32.6
+6 Virginia   Falls Church city   14128      77.6     127610    22.4
+\end{verbatim}
+
+\subsection{Summarise}\label{summarise}
+
+A common task we might encounter as data scientists is to calculate
+different statistics to learn more about the dataset. To do this, we can
+use the \texttt{summarise()} function. We can pass multiple statistics
+we want to calculate into the function.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{cd1 }\SpecialCharTok{|\textgreater{}} \FunctionTok{summarise}\NormalTok{(}\AttributeTok{total\_pop =} \FunctionTok{sum}\NormalTok{(pop), }\AttributeTok{avg\_income =} \FunctionTok{mean}\NormalTok{(med\_income))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+# A tibble: 1 x 2
+  total_pop avg_income
+      <int>      <dbl>
+1 324697795     53476.
+\end{verbatim}
+
+\subsection{Group By}\label{group-by}
+
+Calculating statistics on a whole dataset is nice, but it is also
+beneficial to calculate the statistics based on some categorical
+characteristic within the dataset. To do this we can use the
+\texttt{group\_by()} function which (behind the scenes) will essentially
+make small datasets for each characteristic. Using the
+\texttt{summarise()} with this allows us to make calculations on each
+group. In the example below we calculate the total population for each
+state along with the average median income level for each state.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{cd1 }\SpecialCharTok{|\textgreater{}} \FunctionTok{group\_by}\NormalTok{(state) }\SpecialCharTok{|\textgreater{}}
+    \FunctionTok{summarise}\NormalTok{(}\AttributeTok{total\_pop =} \FunctionTok{sum}\NormalTok{(pop), }\AttributeTok{avg\_income =} \FunctionTok{mean}\NormalTok{(med\_income))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+# A tibble: 51 x 3
+   state                total_pop avg_income
+   <chr>                    <int>      <dbl>
+ 1 Alabama                4876250     43575.
+ 2 Alaska                  737068     67789.
+ 3 Arizona                7050299     48990.
+ 4 Arkansas               2999370     42237.
+ 5 California            39283497     67714.
+ 6 Colorado               5610349     58795.
+ 7 Connecticut            3575074     79201.
+ 8 Delaware                957248     65988 
+ 9 District of Columbia    692683     86420 
+10 Florida               20901636     51290.
+# i 41 more rows
+\end{verbatim}
+
+\section{Tidyr}\label{tidyr}
+
+When dealing with data, it is important to be able to manipulate the
+data into a ``usable'' format. This is often referred to as making sure
+the data is ``tidy'', meaning each column is a variable, each row is an
+observation, and each cell has a single value. To accomplish this task
+we will use the \texttt{tidyr} library. First though, lets look at the
+\texttt{population} dataset that we will be working with. I have
+filtered it so only the first 5 years are present for each country.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{pop1 }\OtherTok{\textless{}{-}}\NormalTok{ population }\SpecialCharTok{|\textgreater{}} \FunctionTok{filter}\NormalTok{(year }\SpecialCharTok{\%in\%} \FunctionTok{c}\NormalTok{(}\DecValTok{1995}\NormalTok{,}\DecValTok{1996}\NormalTok{,}\DecValTok{1997}\NormalTok{,}\DecValTok{1998}\NormalTok{,}\DecValTok{1999}\NormalTok{))}
+\NormalTok{pop1}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+# A tibble: 1,060 x 3
+   country      year population
+   <chr>       <dbl>      <dbl>
+ 1 Afghanistan  1995   17586073
+ 2 Afghanistan  1996   18415307
+ 3 Afghanistan  1997   19021226
+ 4 Afghanistan  1998   19496836
+ 5 Afghanistan  1999   19987071
+ 6 Albania      1995    3357858
+ 7 Albania      1996    3341043
+ 8 Albania      1997    3331317
+ 9 Albania      1998    3325456
+10 Albania      1999    3317941
+# i 1,050 more rows
+\end{verbatim}
+
+\subsection{Pivot Wider}\label{pivot-wider}
+
+As we can see that the dataset is not tidy because the information for
+one observation (a country) is spread across multiple rows. We'd like
+all of a country's values to live on the same row. To fix this we can do
+what we call ``pivoting wider''. This will take the take the categorical
+data in a single column and turn it into column headers while the values
+from the other column are matched up to the observation and column
+header. In the code below we first use the \texttt{mutate()} and
+\texttt{unite()} function to alter the years so that a letter is
+present, this is because column names cannot start with a number in R
+unless we put them in quotes. To avoid constantly typing quotes later,
+we're prepending a `y' to the year.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{pop1 }\SpecialCharTok{|\textgreater{}} \FunctionTok{mutate}\NormalTok{(}\AttributeTok{y=}\StringTok{"y"}\NormalTok{) }\SpecialCharTok{|\textgreater{}} \FunctionTok{unite}\NormalTok{(}\StringTok{"year"}\NormalTok{, }\FunctionTok{c}\NormalTok{(y, year)) }\SpecialCharTok{|\textgreater{}}
+    \FunctionTok{pivot\_wider}\NormalTok{(}\AttributeTok{names\_from =}\NormalTok{ year, }\AttributeTok{values\_from =}\NormalTok{ population)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+# A tibble: 212 x 6
+   country               y_1995   y_1996   y_1997   y_1998   y_1999
+   <chr>                  <dbl>    <dbl>    <dbl>    <dbl>    <dbl>
+ 1 Afghanistan         17586073 18415307 19021226 19496836 19987071
+ 2 Albania              3357858  3341043  3331317  3325456  3317941
+ 3 Algeria             29315463 29845208 30345466 30820435 31276295
+ 4 American Samoa         52874    53926    54942    55899    56768
+ 5 Andorra                63854    64274    64090    63799    64084
+ 6 Angola              12104952 12451945 12791388 13137542 13510616
+ 7 Anguilla                9807    10063    10305    10545    10797
+ 8 Antigua and Barbuda    68349    70245    72232    74206    76041
+ 9 Argentina           34833168 35264070 35690778 36109342 36514558
+10 Armenia              3223173  3173425  3137652  3112958  3093820
+# i 202 more rows
+\end{verbatim}
+
+We would consider the output above to now be tidy because all values
+associated with a country are now in the same row.
+
+\subsection{Pivot Longer}\label{pivot-longer}
+
+Since pivoting wider takes values in a column and turns them into column
+headers, pivoting longer will take the column headers the transform them
+into columns themselves. Notice that pivot\_longer takes the year
+columns (y\_1995, y\_1996, \ldots) and stacks them into two columns: one
+for year and one for population. This gets us back to the original tall
+format.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{pop1 }\SpecialCharTok{|\textgreater{}} \FunctionTok{mutate}\NormalTok{(}\AttributeTok{y=}\StringTok{"y"}\NormalTok{) }\SpecialCharTok{|\textgreater{}} \FunctionTok{unite}\NormalTok{(}\StringTok{"year"}\NormalTok{, }\FunctionTok{c}\NormalTok{(y, year)) }\SpecialCharTok{|\textgreater{}}
+    \FunctionTok{pivot\_wider}\NormalTok{(}\AttributeTok{names\_from =}\NormalTok{ year, }\AttributeTok{values\_from =}\NormalTok{ population) }\SpecialCharTok{|\textgreater{}}
+    \FunctionTok{pivot\_longer}\NormalTok{(y\_1995}\SpecialCharTok{:}\NormalTok{y\_1999, }\AttributeTok{names\_to =} \StringTok{"year"}\NormalTok{, }\AttributeTok{values\_to =} \StringTok{"population"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+# A tibble: 1,060 x 3
+   country     year   population
+   <chr>       <chr>       <dbl>
+ 1 Afghanistan y_1995   17586073
+ 2 Afghanistan y_1996   18415307
+ 3 Afghanistan y_1997   19021226
+ 4 Afghanistan y_1998   19496836
+ 5 Afghanistan y_1999   19987071
+ 6 Albania     y_1995    3357858
+ 7 Albania     y_1996    3341043
+ 8 Albania     y_1997    3331317
+ 9 Albania     y_1998    3325456
+10 Albania     y_1999    3317941
+# i 1,050 more rows
+\end{verbatim}
+
+
+
+
+\end{document}

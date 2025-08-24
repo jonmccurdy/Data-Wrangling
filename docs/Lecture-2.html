@@ -1,0 +1,1070 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.29">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>2&nbsp; Introducing Databases – Data-330-Book</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./Lecture-1.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-0815c480559380816a4d1ea211a47e91.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-364982630eef5352dd1537128a8ed5cb.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./Lecture-2.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Introducing Databases</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Data-330-Book</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Lecture-1.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Data Exploration Refresher</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Lecture-2.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Introducing Databases</span></span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#connecting-to-a-database" id="toc-connecting-to-a-database" class="nav-link active" data-scroll-target="#connecting-to-a-database"><span class="header-section-number">2.1</span> Connecting to a Database</a></li>
+  <li><a href="#database-properties" id="toc-database-properties" class="nav-link" data-scroll-target="#database-properties"><span class="header-section-number">2.2</span> Database Properties</a></li>
+  <li><a href="#accessing-tables" id="toc-accessing-tables" class="nav-link" data-scroll-target="#accessing-tables"><span class="header-section-number">2.3</span> Accessing Tables</a></li>
+  <li><a href="#filtering-a-table" id="toc-filtering-a-table" class="nav-link" data-scroll-target="#filtering-a-table"><span class="header-section-number">2.4</span> Filtering a Table</a></li>
+  <li><a href="#arranging-a-table" id="toc-arranging-a-table" class="nav-link" data-scroll-target="#arranging-a-table"><span class="header-section-number">2.5</span> Arranging a Table</a></li>
+  <li><a href="#joining-tables" id="toc-joining-tables" class="nav-link" data-scroll-target="#joining-tables"><span class="header-section-number">2.6</span> Joining Tables</a></li>
+  <li><a href="#grouping-and-summarising" id="toc-grouping-and-summarising" class="nav-link" data-scroll-target="#grouping-and-summarising"><span class="header-section-number">2.7</span> Grouping and Summarising</a></li>
+  <li><a href="#disconnecting-from-the-database" id="toc-disconnecting-from-the-database" class="nav-link" data-scroll-target="#disconnecting-from-the-database"><span class="header-section-number">2.8</span> Disconnecting from the Database</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Introducing Databases</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>In the real world, data is rarely small or neatly organized, so knowing how to work with databases is essential for any data scientist. Databases help us store, organize, and access large amounts of data efficiently. They can contain multiple related tables, which keeps data consistent and avoids duplication. Databases also let us query data quickly, handle large datasets, and allow multiple users to access the data at the same time. In this lecture, we’ll use a database stored on our local computer, but the skills and syntax apply to databases on company servers as well.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># If you do not have the following installed already you will need to do that first</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co"># install.packages(c("DBI", "RSQLite", "dplyr", "dbplyr"))</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(DBI)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(RSQLite)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dbplyr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Download the following sample database that we will be using for this lecture. I recommend creating a “Data-330” folder that will house all of the files that we use throughout this semester. This can be done by creating an R project and moving the file to the correct folder.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Supplemental Material
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><a href="college.db" download=""> College Database we will be using </a></p>
+</div>
+</div>
+<!--
+set.seed(123)
+
+# Names
+first_names <- c("Alice","Ben","Claire","Danny","Evelyn","Frank","Grant",
+                 "Hannah","Isabela","Jake","Kate","Liam","Mary","Nate",
+                 "Olivia","Peter","Quinn","Rachel","Stacy","Thomas",
+                 "Uma","Victor","Wendy","Xavier","Yara","Zach")
+
+last_names <- c("Anderson","Brown","Clark","Davis","Evans","Foster","Green",
+                "Hughes","Ingram","Johnson","King","Lopez","Miller","Nelson",
+                "Owens","Parker","Quincy","Roberts","Stevens","Turner",
+                "Underwood","Vasquez","Williams","Xiong","Young","Zimmerman")
+
+# Majors and years
+majors <- c("Data Science","Biology","History","Computer Science","Math",
+            "Psychology","Business","English")
+
+years <- c("Freshman","Sophomore","Junior","Senior")
+
+# Students
+students <- data.frame(
+  student_id = 1:50,
+  name = paste(sample(first_names, 50, replace=TRUE),
+               sample(last_names, 50, replace=TRUE)),
+  major = sample(majors, 50, replace=TRUE),
+  gpa = round(runif(50, 2.5, 4.0), 2),
+  year = sample(years, 50, replace=TRUE)
+)
+
+# Courses
+courses <- data.frame(
+  course_id = 1:10,
+  course_name = c("Intro to R","Biology 101","World History",
+                  "Algorithms","Calculus I","Psychology of Learning",
+                  "Microeconomics","Literary Analysis","Statistics",
+                  "Machine Learning"),
+  credits = sample(3:4, 10, replace=TRUE)
+)
+
+# Enrollments (each student takes 2–5 courses)
+enrollments <- do.call(rbind, lapply(students$student_id, function(sid) {
+  n_courses <- sample(2:5, 1)
+  course_ids <- sample(courses$course_id, n_courses)
+  grades <- sample(c("A","A-","B+","B","B-","C+","C"), n_courses, replace=TRUE)
+  data.frame(student_id = sid, course_id = course_ids, grade = grades)
+}))
+
+# -----------------------------
+# Write Data into Database
+# -----------------------------
+dbWriteTable(con, "Students", students, append=TRUE)
+dbWriteTable(con, "Courses", courses, append=TRUE)
+dbWriteTable(con, "Enrollments", enrollments, append=TRUE)
+-->
+<section id="connecting-to-a-database" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="connecting-to-a-database"><span class="header-section-number">2.1</span> Connecting to a Database</h2>
+<p>Now that we have the database that we would like to use we can open a connection to it. This is important because the database itself is not loaded into R; instead, the connection object allows us to read, write, and query data without loading the entire database into memory. To make this connection we will use the <code>dbConnect()</code> function. The <code>SQLite()</code> command tells R that the database we will be accessing is a SQLite database (there are many different kinds of databases, we will stick with this one for now). Finally, the “college.db” command is the path to the database file in the current working directory that we would like to access.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>db_con <span class="ot">&lt;-</span> <span class="fu">dbConnect</span>(<span class="fu">SQLite</span>(), <span class="st">"college.db"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="database-properties" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="database-properties"><span class="header-section-number">2.2</span> Database Properties</h2>
+<p>Once we have connected to the database we will see it appear in our global environment. Notice though that if you click the object no data will appear, queries are required to pull the data into R. If you want to see what tables are present in the database you can use the <code>dbListTables()</code> function with your database connection passed into it. The output shows that the database currently contains three tables: <code>Courses</code>, <code>Enrollments</code>, and <code>Students</code></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dbListTables</span>(db_con)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Courses"     "Enrollments" "Students"   </code></pre>
+</div>
+</div>
+<p>If we want to dive further into the tables and see each table contains we can use the <code>dbListFields()</code>function, passing the database connection and the table name as arguments. In the example below we can see the <code>Courses</code> table contains the course_id, the course_name, and the number of credits it is. Likewise we can learn about the other tables using the same code.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dbListFields</span>(db_con, <span class="st">"Courses"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "course_id"   "course_name" "credits"    </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dbListFields</span>(db_con, <span class="st">"Enrollments"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "student_id" "course_id"  "grade"     </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dbListFields</span>(db_con, <span class="st">"Students"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "student_id" "name"       "major"      "gpa"        "year"      </code></pre>
+</div>
+</div>
+</section>
+<section id="accessing-tables" class="level2" data-number="2.3">
+<h2 data-number="2.3" class="anchored" data-anchor-id="accessing-tables"><span class="header-section-number">2.3</span> Accessing Tables</h2>
+<p>If we want to access the tables within the database we can use the <code>tbl()</code> function while calling both the database connection and the table name. Notice that the output from tbl() does not load the full table into R; it only creates a reference to the table and shows a preview of the first few rows. This can be seen with the “Enrollments” and “Students” tables as it is not quite sure how many rows are present.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tbl</span>(db_con, <span class="st">"Courses"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># Source:   table&lt;`Courses`&gt; [10 x 3]
+# Database: sqlite 3.50.4 [C:\Data-330-Book\college.db]
+   course_id course_name            credits
+       &lt;int&gt; &lt;chr&gt;                    &lt;int&gt;
+ 1         1 Intro to R                   3
+ 2         2 Biology 101                  3
+ 3         3 World History                3
+ 4         4 Algorithms                   4
+ 5         5 Calculus I                   4
+ 6         6 Psychology of Learning       3
+ 7         7 Microeconomics               3
+ 8         8 Literary Analysis            3
+ 9         9 Statistics                   4
+10        10 Machine Learning             4</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tbl</span>(db_con, <span class="st">"Enrollments"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># Source:   table&lt;`Enrollments`&gt; [?? x 3]
+# Database: sqlite 3.50.4 [C:\Data-330-Book\college.db]
+   student_id course_id grade
+        &lt;int&gt;     &lt;int&gt; &lt;chr&gt;
+ 1          1         8 C    
+ 2          1         9 C+   
+ 3          1         1 C+   
+ 4          1        10 C+   
+ 5          1         5 B+   
+ 6          2        10 A-   
+ 7          2         1 A    
+ 8          3        10 C    
+ 9          3         5 B    
+10          4        10 B    
+# ℹ more rows</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tbl</span>(db_con, <span class="st">"Students"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># Source:   table&lt;`Students`&gt; [?? x 5]
+# Database: sqlite 3.50.4 [C:\Data-330-Book\college.db]
+   student_id name             major              gpa year     
+        &lt;int&gt; &lt;chr&gt;            &lt;chr&gt;            &lt;dbl&gt; &lt;chr&gt;    
+ 1          1 Olivia Miller    Business          3.29 Freshman 
+ 2          2 Stacy Roberts    Math              3.81 Sophomore
+ 3          3 Nate Anderson    Math              3.37 Junior   
+ 4          4 Claire Young     English           3.76 Freshman 
+ 5          5 Jake Young       History           2.97 Sophomore
+ 6          6 Rachel Foster    Biology           3.56 Sophomore
+ 7          7 Victor Underwood Biology           2.9  Freshman 
+ 8          8 Kate Owens       Biology           3.39 Senior   
+ 9          9 Evelyn Ingram    Computer Science  3.22 Senior   
+10         10 Thomas Owens     Biology           2.9  Senior   
+# ℹ more rows</code></pre>
+</div>
+</div>
+<p>If we want to actually pull the table from the database and have it accessible in R then we will need to use the <code>collect()</code> function. In the code below we can see that we pull the data from the database and save it to some variable. We can then look at the first few observations (you can look at all of it, I am only looking at the first few as I do not want to display them all). We can also look at the dimensions of the table, which shows that there are 50 rows in the students at the college.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>students_table <span class="ot">&lt;-</span> <span class="fu">tbl</span>(db_con, <span class="st">"Students"</span>) <span class="sc">|&gt;</span> <span class="fu">collect</span>()</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>students_table <span class="sc">|&gt;</span> <span class="fu">head</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 5
+  student_id name          major      gpa year     
+       &lt;int&gt; &lt;chr&gt;         &lt;chr&gt;    &lt;dbl&gt; &lt;chr&gt;    
+1          1 Olivia Miller Business  3.29 Freshman 
+2          2 Stacy Roberts Math      3.81 Sophomore
+3          3 Nate Anderson Math      3.37 Junior   
+4          4 Claire Young  English   3.76 Freshman 
+5          5 Jake Young    History   2.97 Sophomore
+6          6 Rachel Foster Biology   3.56 Sophomore</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>students_table <span class="sc">|&gt;</span> <span class="fu">dim</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 50  5</code></pre>
+</div>
+</div>
+</section>
+<section id="filtering-a-table" class="level2" data-number="2.4">
+<h2 data-number="2.4" class="anchored" data-anchor-id="filtering-a-table"><span class="header-section-number">2.4</span> Filtering a Table</h2>
+<p>Typically with databases we use a language called SQL (pronounced either “S-Q-L” or “sequel”) which allows us to efficiently query a database. We can either use that language, or dplyr to filter, sort, and summarize the dataset. We can see both examples below where we are selecting all of the columns from the Students table and showing only the rows where the gpa is greater than 3.5. When we use the <code>dbGetQuery()</code> function we pass the database connection and the SQL query we want to run and the output is a dataframe in R. When we use the <code>tbl()</code> function alongside the <code>dplyr</code> commands the output is a reference to a table within the database. We would need to use the <code>collect()</code> function to load the actual data into R. The second way can be beneficial with large datasets as we do not pull the data into R until we explicitly call collect(), which can save memory and computation time.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dbGetQuery</span>(db_con, <span class="st">"SELECT * FROM Students WHERE gpa &gt; 3.5"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   student_id           name      major  gpa      year
+1           2  Stacy Roberts       Math 3.81 Sophomore
+2           4   Claire Young    English 3.76  Freshman
+3           6  Rachel Foster    Biology 3.56 Sophomore
+4          12  Victor Parker Psychology 3.87    Senior
+5          13    Yara Turner   Business 3.85  Freshman
+6          16   Stacy Hughes Psychology 3.98  Freshman
+7          18   Yara Vasquez Psychology 3.91    Junior
+8          25  Isabela Brown Psychology 3.94    Senior
+9          29  Quinn Vasquez   Business 3.82  Freshman
+10         37 Grant Williams Psychology 3.51    Junior
+11         39 Isabela Hughes    English 3.55    Junior
+12         42      Uma Young    Biology 3.73  Freshman
+13         43   Grant Nelson       Math 3.88  Freshman
+14         45   Frank Nelson    English 3.94  Freshman
+15         46     Yara Green    English 3.59    Junior
+16         47      Ben Clark    English 3.53 Sophomore</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tbl</span>(db_con, <span class="st">"Students"</span>) <span class="sc">|&gt;</span> <span class="fu">filter</span>(gpa <span class="sc">&gt;</span> <span class="fl">3.5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># Source:   SQL [?? x 5]
+# Database: sqlite 3.50.4 [C:\Data-330-Book\college.db]
+   student_id name           major        gpa year     
+        &lt;int&gt; &lt;chr&gt;          &lt;chr&gt;      &lt;dbl&gt; &lt;chr&gt;    
+ 1          2 Stacy Roberts  Math        3.81 Sophomore
+ 2          4 Claire Young   English     3.76 Freshman 
+ 3          6 Rachel Foster  Biology     3.56 Sophomore
+ 4         12 Victor Parker  Psychology  3.87 Senior   
+ 5         13 Yara Turner    Business    3.85 Freshman 
+ 6         16 Stacy Hughes   Psychology  3.98 Freshman 
+ 7         18 Yara Vasquez   Psychology  3.91 Junior   
+ 8         25 Isabela Brown  Psychology  3.94 Senior   
+ 9         29 Quinn Vasquez  Business    3.82 Freshman 
+10         37 Grant Williams Psychology  3.51 Junior   
+# ℹ more rows</code></pre>
+</div>
+</div>
+</section>
+<section id="arranging-a-table" class="level2" data-number="2.5">
+<h2 data-number="2.5" class="anchored" data-anchor-id="arranging-a-table"><span class="header-section-number">2.5</span> Arranging a Table</h2>
+<p>In the code below we select 3 columns and then arrange (order) them by their gpa in descending order. We save the result to a variable and display only the first few rows to keep the output concise.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>order_gpa_query <span class="ot">&lt;-</span> <span class="st">"SELECT student_id, name, gpa FROM Students ORDER BY gpa DESC"</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>ordered_gpa <span class="ot">&lt;-</span> <span class="fu">dbGetQuery</span>(db_con, order_gpa_query)</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(ordered_gpa)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  student_id          name  gpa
+1         16  Stacy Hughes 3.98
+2         25 Isabela Brown 3.94
+3         45  Frank Nelson 3.94
+4         18  Yara Vasquez 3.91
+5         43  Grant Nelson 3.88
+6         12 Victor Parker 3.87</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tbl</span>(db_con, <span class="st">"Students"</span>) <span class="sc">|&gt;</span> <span class="fu">select</span>(student_id, name, gpa) <span class="sc">|&gt;</span> </span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>        <span class="fu">arrange</span>(<span class="fu">desc</span>(gpa)) <span class="sc">|&gt;</span> </span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>        <span class="fu">collect</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 50 × 3
+   student_id name            gpa
+        &lt;int&gt; &lt;chr&gt;         &lt;dbl&gt;
+ 1         16 Stacy Hughes   3.98
+ 2         25 Isabela Brown  3.94
+ 3         45 Frank Nelson   3.94
+ 4         18 Yara Vasquez   3.91
+ 5         43 Grant Nelson   3.88
+ 6         12 Victor Parker  3.87
+ 7         13 Yara Turner    3.85
+ 8         29 Quinn Vasquez  3.82
+ 9          2 Stacy Roberts  3.81
+10          4 Claire Young   3.76
+# ℹ 40 more rows</code></pre>
+</div>
+</div>
+</section>
+<section id="joining-tables" class="level2" data-number="2.6">
+<h2 data-number="2.6" class="anchored" data-anchor-id="joining-tables"><span class="header-section-number">2.6</span> Joining Tables</h2>
+<p>Since we are working with multiple tables, it might be beneficial to join them together. Before we attempt this with our database we will look at a basic example to try and see how it can be done. In the code below we have 5 different products, showing the product id along with the product name, and 6 different orders, showing the order number, product id, and the quantity bought.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>products <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">product_id =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>,</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">product_name =</span> <span class="fu">c</span>(<span class="st">"Laptop"</span>, <span class="st">"Phone"</span>, <span class="st">"Tablet"</span>, <span class="st">"Monitor"</span>, <span class="st">"Candybar"</span>)</span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Orders table</span></span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>orders <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">order_id =</span> <span class="dv">101</span><span class="sc">:</span><span class="dv">106</span>,</span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">product_id =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">13</span>),</span>
+<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">quantity =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">1</span>)</span>
+<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-13"><a href="#cb29-13" aria-hidden="true" tabindex="-1"></a>products</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  product_id product_name
+1          1       Laptop
+2          2        Phone
+3          3       Tablet
+4          4      Monitor
+5          5     Candybar</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>orders</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  order_id product_id quantity
+1      101          1        2
+2      102          2        1
+3      103          2        3
+4      104          3        2
+5      105          4        1
+6      106         13        1</code></pre>
+</div>
+</div>
+<p>Keeping these tables separate instead of combining them into one large table avoids duplication, simplifies updates (e.g., changing a product name), makes data easier to manage, and facilitates analysis.</p>
+<p>We can notice that product_id is present in both tables, allowing us to combine the two tables using that variable as the common element. For this we will use the <code>inner_join()</code> function which will return only the rows that match in both tables. Notice that the product “Candybar” did not appear in the joined list, and neither did order “106” which bought product “13” (as these orders/products are not present in both lists). There are other types of join functions as well, such as left, right, and full joins, which combine tables in a way that preserves unmatched rows from one or both tables depending on the type of join.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">inner_join</span>(orders, products, <span class="at">by =</span> <span class="st">"product_id"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  order_id product_id quantity product_name
+1      101          1        2       Laptop
+2      102          2        1        Phone
+3      103          2        3        Phone
+4      104          3        2       Tablet
+5      105          4        1      Monitor</code></pre>
+</div>
+</div>
+<p>In the code below we show both how it can be done in SQL and dplyr. In the SQL query, we join <code>Students</code> with <code>Enrollments</code> using <code>student_id</code> as the common key, and then join <code>Enrollments</code> with <code>Courses</code> using <code>course_id.</code> After that we are only selecting the <code>name</code>, <code>course_name</code>, and <code>grade</code> variables.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>combine_query <span class="ot">&lt;-</span> <span class="st">"SELECT Students.name, Courses.course_name, Enrollments.grade</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a><span class="st">                  FROM Students</span></span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a><span class="st">                  JOIN Enrollments ON Students.student_id = Enrollments.student_id</span></span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a><span class="st">                  JOIN Courses ON Enrollments.course_id = Courses.course_id"</span></span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>combined_tables <span class="ot">&lt;-</span> <span class="fu">dbGetQuery</span>(db_con, combine_query)</span>
+<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(combined_tables)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>           name       course_name grade
+1 Olivia Miller        Intro to R    C+
+2 Olivia Miller        Calculus I    B+
+3 Olivia Miller Literary Analysis     C
+4 Olivia Miller        Statistics    C+
+5 Olivia Miller  Machine Learning    C+
+6 Stacy Roberts        Intro to R     A</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co"># dplyr</span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tbl</span>(db_con, <span class="st">"Students"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">inner_join</span>(<span class="fu">tbl</span>(db_con, <span class="st">"Enrollments"</span>), <span class="at">by =</span> <span class="st">"student_id"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">inner_join</span>(<span class="fu">tbl</span>(db_con, <span class="st">"Courses"</span>), <span class="at">by =</span> <span class="st">"course_id"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(name, course_name, grade)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># Source:   SQL [?? x 3]
+# Database: sqlite 3.50.4 [C:\Data-330-Book\college.db]
+   name          course_name       grade
+   &lt;chr&gt;         &lt;chr&gt;             &lt;chr&gt;
+ 1 Olivia Miller Intro to R        C+   
+ 2 Olivia Miller Calculus I        B+   
+ 3 Olivia Miller Literary Analysis C    
+ 4 Olivia Miller Statistics        C+   
+ 5 Olivia Miller Machine Learning  C+   
+ 6 Stacy Roberts Intro to R        A    
+ 7 Stacy Roberts Machine Learning  A-   
+ 8 Nate Anderson Calculus I        B    
+ 9 Nate Anderson Machine Learning  C    
+10 Claire Young  Statistics        C+   
+# ℹ more rows</code></pre>
+</div>
+</div>
+</section>
+<section id="grouping-and-summarising" class="level2" data-number="2.7">
+<h2 data-number="2.7" class="anchored" data-anchor-id="grouping-and-summarising"><span class="header-section-number">2.7</span> Grouping and Summarising</h2>
+<p>In addition to selecting, filtering, and arranging the data, we can also summarize and group by different variables. In the code below we look at the “Enrollments” table, group by <code>student_id</code> to count how many courses each student is enrolled in. This allows us to count how many courses each student is enrolled in during the semester.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>classes_per_student_query <span class="ot">&lt;-</span> <span class="st">"SELECT student_id, COUNT(course_id)</span></span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a><span class="st">                              FROM Enrollments</span></span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a><span class="st">                              GROUP BY student_id"</span></span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a>students_per_class <span class="ot">&lt;-</span> <span class="fu">dbGetQuery</span>(db_con, classes_per_student_query)</span>
+<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(students_per_class)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  student_id COUNT(course_id)
+1          1                5
+2          2                2
+3          3                2
+4          4                2
+5          5                3
+6          6                3</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tbl</span>(db_con, <span class="st">"Enrollments"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(student_id) <span class="sc">|&gt;</span></span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">count =</span> <span class="fu">n</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># Source:   SQL [?? x 2]
+# Database: sqlite 3.50.4 [C:\Data-330-Book\college.db]
+   student_id count
+        &lt;int&gt; &lt;int&gt;
+ 1          1     5
+ 2          2     2
+ 3          3     2
+ 4          4     2
+ 5          5     3
+ 6          6     3
+ 7          7     2
+ 8          8     2
+ 9          9     2
+10         10     4
+# ℹ more rows</code></pre>
+</div>
+</div>
+<p>We can also count the number of students enrolled in each course by running the following code:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>students_per_course_query <span class="ot">&lt;-</span>   <span class="st">"SELECT course_id, COUNT(student_id)</span></span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a><span class="st">                               FROM Enrollments</span></span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a><span class="st">                               GROUP BY course_id"</span></span>
+<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a>students_per_course <span class="ot">&lt;-</span> <span class="fu">dbGetQuery</span>(db_con, students_per_course_query)</span>
+<span id="cb43-6"><a href="#cb43-6" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(students_per_course)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  course_id COUNT(student_id)
+1         1                18
+2         2                17
+3         3                17
+4         4                13
+5         5                18
+6         6                16</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tbl</span>(db_con, <span class="st">"Enrollments"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(course_id) <span class="sc">|&gt;</span></span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">count =</span> <span class="fu">n</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># Source:   SQL [10 x 2]
+# Database: sqlite 3.50.4 [C:\Data-330-Book\college.db]
+   course_id count
+       &lt;int&gt; &lt;int&gt;
+ 1         1    18
+ 2         2    17
+ 3         3    17
+ 4         4    13
+ 5         5    18
+ 6         6    16
+ 7         7    18
+ 8         8    15
+ 9         9    14
+10        10    18</code></pre>
+</div>
+</div>
+</section>
+<section id="disconnecting-from-the-database" class="level2" data-number="2.8">
+<h2 data-number="2.8" class="anchored" data-anchor-id="disconnecting-from-the-database"><span class="header-section-number">2.8</span> Disconnecting from the Database</h2>
+<p>Once we have finished accessing a database, it is good practice to disconnect from it. This frees up resources on our computer (and the server we are connecting to). It also prevents us from accidentally writing or modifying the database and ensures other users can access and modify the data without issues.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dbDisconnect</span>(db_con)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./Lecture-1.html" class="pagination-link" aria-label="Data Exploration Refresher">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Data Exploration Refresher</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

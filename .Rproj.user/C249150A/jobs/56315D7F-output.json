@@ -156,3 +156,4 @@
 [1,"pandoc \n  to: html\n  output-file: Lecture-1.html\n  standalone: true\n  toc: true\n  number-sections: true\n  title-prefix: Data-330-Book\n  section-divs: true\n  html-math-method: mathjax\n  wrap: none\n  default-image-extension: png\n  css:\n    - style.css\n  number-offset:\n    - 1\n  variables: {}\n  \nmetadata\n  crossref:\n    chapters: true\n  document-css: false\n  link-citations: true\n  date-format: long\n  lang: en\n  bibliography:\n    - references.bib\n  editor: visual\n  theme:\n    - cosmo\n    - brand\n  hide-description: true\n  title: \"[1]{.chapter-number}\\_ [Data Exploration Refresher]{.chapter-title}\"\n  \n"]
 [1,"Output created: _book\\Lecture-1.html\n\nWatching files for changes\n"]
 [1,"GET: /Lecture-1.html\n"]
+[1,"GET: /Lecture-1.html\n"]
