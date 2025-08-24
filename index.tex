@@ -148,6 +148,22 @@
 
 \KOMAoption{captions}{tableheading}
 \makeatletter
+\@ifpackageloaded{tcolorbox}{}{\usepackage[skins,breakable]{tcolorbox}}
+\@ifpackageloaded{fontawesome5}{}{\usepackage{fontawesome5}}
+\definecolor{quarto-callout-color}{HTML}{909090}
+\definecolor{quarto-callout-note-color}{HTML}{0758E5}
+\definecolor{quarto-callout-important-color}{HTML}{CC1914}
+\definecolor{quarto-callout-warning-color}{HTML}{EB9113}
+\definecolor{quarto-callout-tip-color}{HTML}{00A047}
+\definecolor{quarto-callout-caution-color}{HTML}{FC5300}
+\definecolor{quarto-callout-color-frame}{HTML}{acacac}
+\definecolor{quarto-callout-note-color-frame}{HTML}{4582ec}
+\definecolor{quarto-callout-important-color-frame}{HTML}{d9534f}
+\definecolor{quarto-callout-warning-color-frame}{HTML}{f0ad4e}
+\definecolor{quarto-callout-tip-color-frame}{HTML}{02b875}
+\definecolor{quarto-callout-caution-color-frame}{HTML}{fd7e14}
+\makeatother
+\makeatletter
 \@ifpackageloaded{bookmark}{}{\usepackage{bookmark}}
 \makeatother
 \makeatletter
@@ -196,7 +212,7 @@
 \urlstyle{same}
 \hypersetup{
   pdftitle={Data-330-Book},
-  pdfauthor={Norah Jones},
+  pdfauthor={Jon McCurdy},
   colorlinks=true,
   linkcolor={blue},
   filecolor={Maroon},
@@ -206,7 +222,7 @@
 
 
 \title{Data-330-Book}
-\author{Norah Jones}
+\author{Jon McCurdy}
 \date{2025-08-19}
 \begin{document}
 \maketitle
@@ -724,6 +740,613 @@ format.
 10 Albania     y_1999    3317941
 # i 1,050 more rows
 \end{verbatim}
+
+\bookmarksetup{startatroot}
+
+\chapter{Introducing Databases}\label{introducing-databases}
+
+In the real world, data is rarely small or neatly organized, so knowing
+how to work with databases is essential for any data scientist.
+Databases help us store, organize, and access large amounts of data
+efficiently. They can contain multiple related tables, which keeps data
+consistent and avoids duplication. Databases also let us query data
+quickly, handle large datasets, and allow multiple users to access the
+data at the same time. In this lecture, we'll use a database stored on
+our local computer, but the skills and syntax apply to databases on
+company servers as well.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# If you do not have the following installed already you will need to do that first}
+\CommentTok{\# install.packages(c("DBI", "RSQLite", "dplyr", "dbplyr"))}
+
+\FunctionTok{library}\NormalTok{(DBI)}
+\FunctionTok{library}\NormalTok{(RSQLite)}
+\FunctionTok{library}\NormalTok{(dplyr)}
+\FunctionTok{library}\NormalTok{(dbplyr)}
+\end{Highlighting}
+\end{Shaded}
+
+Download the following sample database that we will be using for this
+lecture. I recommend creating a ``Data-330'' folder that will house all
+of the files that we use throughout this semester. This can be done by
+creating an R project and moving the file to the correct folder.
+
+\begin{tcolorbox}[enhanced jigsaw, opacityback=0, arc=.35mm, left=2mm, breakable, leftrule=.75mm, bottomrule=.15mm, colframe=quarto-callout-tip-color-frame, opacitybacktitle=0.6, bottomtitle=1mm, coltitle=black, toptitle=1mm, colbacktitle=quarto-callout-tip-color!10!white, titlerule=0mm, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Supplemental Material}, toprule=.15mm, colback=white, rightrule=.15mm]
+
+College Database we will be using
+
+\end{tcolorbox}
+
+\section{Connecting to a Database}\label{connecting-to-a-database}
+
+Now that we have the database that we would like to use we can open a
+connection to it. This is important because the database itself is not
+loaded into R; instead, the connection object allows us to read, write,
+and query data without loading the entire database into memory. To make
+this connection we will use the \texttt{dbConnect()} function. The
+\texttt{SQLite()} command tells R that the database we will be accessing
+is a SQLite database (there are many different kinds of databases, we
+will stick with this one for now). Finally, the ``college.db'' command
+is the path to the database file in the current working directory that
+we would like to access.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{db\_con }\OtherTok{\textless{}{-}} \FunctionTok{dbConnect}\NormalTok{(}\FunctionTok{SQLite}\NormalTok{(), }\StringTok{"college.db"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\section{Database Properties}\label{database-properties}
+
+Once we have connected to the database we will see it appear in our
+global environment. Notice though that if you click the object no data
+will appear, queries are required to pull the data into R. If you want
+to see what tables are present in the database you can use the
+\texttt{dbListTables()} function with your database connection passed
+into it. The output shows that the database currently contains three
+tables: \texttt{Courses}, \texttt{Enrollments}, and \texttt{Students}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{dbListTables}\NormalTok{(db\_con)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+[1] "Courses"     "Enrollments" "Students"   
+\end{verbatim}
+
+If we want to dive further into the tables and see each table contains
+we can use the \texttt{dbListFields()}function, passing the database
+connection and the table name as arguments. In the example below we can
+see the \texttt{Courses} table contains the course\_id, the
+course\_name, and the number of credits it is. Likewise we can learn
+about the other tables using the same code.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{dbListFields}\NormalTok{(db\_con, }\StringTok{"Courses"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+[1] "course_id"   "course_name" "credits"    
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{dbListFields}\NormalTok{(db\_con, }\StringTok{"Enrollments"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+[1] "student_id" "course_id"  "grade"     
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{dbListFields}\NormalTok{(db\_con, }\StringTok{"Students"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+[1] "student_id" "name"       "major"      "gpa"        "year"      
+\end{verbatim}
+
+\section{Accessing Tables}\label{accessing-tables}
+
+If we want to access the tables within the database we can use the
+\texttt{tbl()} function while calling both the database connection and
+the table name. Notice that the output from tbl() does not load the full
+table into R; it only creates a reference to the table and shows a
+preview of the first few rows. This can be seen with the ``Enrollments''
+and ``Students'' tables as it is not quite sure how many rows are
+present.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{tbl}\NormalTok{(db\_con, }\StringTok{"Courses"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+# Source:   table<`Courses`> [10 x 3]
+# Database: sqlite 3.50.4 [C:\Data-330-Book\college.db]
+   course_id course_name            credits
+       <int> <chr>                    <int>
+ 1         1 Intro to R                   3
+ 2         2 Biology 101                  3
+ 3         3 World History                3
+ 4         4 Algorithms                   4
+ 5         5 Calculus I                   4
+ 6         6 Psychology of Learning       3
+ 7         7 Microeconomics               3
+ 8         8 Literary Analysis            3
+ 9         9 Statistics                   4
+10        10 Machine Learning             4
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{tbl}\NormalTok{(db\_con, }\StringTok{"Enrollments"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+# Source:   table<`Enrollments`> [?? x 3]
+# Database: sqlite 3.50.4 [C:\Data-330-Book\college.db]
+   student_id course_id grade
+        <int>     <int> <chr>
+ 1          1         8 C    
+ 2          1         9 C+   
+ 3          1         1 C+   
+ 4          1        10 C+   
+ 5          1         5 B+   
+ 6          2        10 A-   
+ 7          2         1 A    
+ 8          3        10 C    
+ 9          3         5 B    
+10          4        10 B    
+# i more rows
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{tbl}\NormalTok{(db\_con, }\StringTok{"Students"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+# Source:   table<`Students`> [?? x 5]
+# Database: sqlite 3.50.4 [C:\Data-330-Book\college.db]
+   student_id name             major              gpa year     
+        <int> <chr>            <chr>            <dbl> <chr>    
+ 1          1 Olivia Miller    Business          3.29 Freshman 
+ 2          2 Stacy Roberts    Math              3.81 Sophomore
+ 3          3 Nate Anderson    Math              3.37 Junior   
+ 4          4 Claire Young     English           3.76 Freshman 
+ 5          5 Jake Young       History           2.97 Sophomore
+ 6          6 Rachel Foster    Biology           3.56 Sophomore
+ 7          7 Victor Underwood Biology           2.9  Freshman 
+ 8          8 Kate Owens       Biology           3.39 Senior   
+ 9          9 Evelyn Ingram    Computer Science  3.22 Senior   
+10         10 Thomas Owens     Biology           2.9  Senior   
+# i more rows
+\end{verbatim}
+
+If we want to actually pull the table from the database and have it
+accessible in R then we will need to use the \texttt{collect()}
+function. In the code below we can see that we pull the data from the
+database and save it to some variable. We can then look at the first few
+observations (you can look at all of it, I am only looking at the first
+few as I do not want to display them all). We can also look at the
+dimensions of the table, which shows that there are 50 rows in the
+students at the college.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{students\_table }\OtherTok{\textless{}{-}} \FunctionTok{tbl}\NormalTok{(db\_con, }\StringTok{"Students"}\NormalTok{) }\SpecialCharTok{|\textgreater{}} \FunctionTok{collect}\NormalTok{()}
+\NormalTok{students\_table }\SpecialCharTok{|\textgreater{}} \FunctionTok{head}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+# A tibble: 6 x 5
+  student_id name          major      gpa year     
+       <int> <chr>         <chr>    <dbl> <chr>    
+1          1 Olivia Miller Business  3.29 Freshman 
+2          2 Stacy Roberts Math      3.81 Sophomore
+3          3 Nate Anderson Math      3.37 Junior   
+4          4 Claire Young  English   3.76 Freshman 
+5          5 Jake Young    History   2.97 Sophomore
+6          6 Rachel Foster Biology   3.56 Sophomore
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{students\_table }\SpecialCharTok{|\textgreater{}} \FunctionTok{dim}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+[1] 50  5
+\end{verbatim}
+
+\section{Filtering a Table}\label{filtering-a-table}
+
+Typically with databases we use a language called SQL (pronounced either
+``S-Q-L'' or ``sequel'') which allows us to efficiently query a
+database. We can either use that language, or dplyr to filter, sort, and
+summarize the dataset. We can see both examples below where we are
+selecting all of the columns from the Students table and showing only
+the rows where the gpa is greater than 3.5. When we use the
+\texttt{dbGetQuery()} function we pass the database connection and the
+SQL query we want to run and the output is a dataframe in R. When we use
+the \texttt{tbl()} function alongside the \texttt{dplyr} commands the
+output is a reference to a table within the database. We would need to
+use the \texttt{collect()} function to load the actual data into R. The
+second way can be beneficial with large datasets as we do not pull the
+data into R until we explicitly call collect(), which can save memory
+and computation time.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{dbGetQuery}\NormalTok{(db\_con, }\StringTok{"SELECT * FROM Students WHERE gpa \textgreater{} 3.5"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+   student_id           name      major  gpa      year
+1           2  Stacy Roberts       Math 3.81 Sophomore
+2           4   Claire Young    English 3.76  Freshman
+3           6  Rachel Foster    Biology 3.56 Sophomore
+4          12  Victor Parker Psychology 3.87    Senior
+5          13    Yara Turner   Business 3.85  Freshman
+6          16   Stacy Hughes Psychology 3.98  Freshman
+7          18   Yara Vasquez Psychology 3.91    Junior
+8          25  Isabela Brown Psychology 3.94    Senior
+9          29  Quinn Vasquez   Business 3.82  Freshman
+10         37 Grant Williams Psychology 3.51    Junior
+11         39 Isabela Hughes    English 3.55    Junior
+12         42      Uma Young    Biology 3.73  Freshman
+13         43   Grant Nelson       Math 3.88  Freshman
+14         45   Frank Nelson    English 3.94  Freshman
+15         46     Yara Green    English 3.59    Junior
+16         47      Ben Clark    English 3.53 Sophomore
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{tbl}\NormalTok{(db\_con, }\StringTok{"Students"}\NormalTok{) }\SpecialCharTok{|\textgreater{}} \FunctionTok{filter}\NormalTok{(gpa }\SpecialCharTok{\textgreater{}} \FloatTok{3.5}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+# Source:   SQL [?? x 5]
+# Database: sqlite 3.50.4 [C:\Data-330-Book\college.db]
+   student_id name           major        gpa year     
+        <int> <chr>          <chr>      <dbl> <chr>    
+ 1          2 Stacy Roberts  Math        3.81 Sophomore
+ 2          4 Claire Young   English     3.76 Freshman 
+ 3          6 Rachel Foster  Biology     3.56 Sophomore
+ 4         12 Victor Parker  Psychology  3.87 Senior   
+ 5         13 Yara Turner    Business    3.85 Freshman 
+ 6         16 Stacy Hughes   Psychology  3.98 Freshman 
+ 7         18 Yara Vasquez   Psychology  3.91 Junior   
+ 8         25 Isabela Brown  Psychology  3.94 Senior   
+ 9         29 Quinn Vasquez  Business    3.82 Freshman 
+10         37 Grant Williams Psychology  3.51 Junior   
+# i more rows
+\end{verbatim}
+
+\section{Arranging a Table}\label{arranging-a-table}
+
+In the code below we select 3 columns and then arrange (order) them by
+their gpa in descending order. We save the result to a variable and
+display only the first few rows to keep the output concise.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{order\_gpa\_query }\OtherTok{\textless{}{-}} \StringTok{"SELECT student\_id, name, gpa FROM Students ORDER BY gpa DESC"}
+\NormalTok{ordered\_gpa }\OtherTok{\textless{}{-}} \FunctionTok{dbGetQuery}\NormalTok{(db\_con, order\_gpa\_query)}
+\FunctionTok{head}\NormalTok{(ordered\_gpa)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+  student_id          name  gpa
+1         16  Stacy Hughes 3.98
+2         25 Isabela Brown 3.94
+3         45  Frank Nelson 3.94
+4         18  Yara Vasquez 3.91
+5         43  Grant Nelson 3.88
+6         12 Victor Parker 3.87
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{tbl}\NormalTok{(db\_con, }\StringTok{"Students"}\NormalTok{) }\SpecialCharTok{|\textgreater{}} \FunctionTok{select}\NormalTok{(student\_id, name, gpa) }\SpecialCharTok{|\textgreater{}} 
+        \FunctionTok{arrange}\NormalTok{(}\FunctionTok{desc}\NormalTok{(gpa)) }\SpecialCharTok{|\textgreater{}} 
+        \FunctionTok{collect}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+# A tibble: 50 x 3
+   student_id name            gpa
+        <int> <chr>         <dbl>
+ 1         16 Stacy Hughes   3.98
+ 2         25 Isabela Brown  3.94
+ 3         45 Frank Nelson   3.94
+ 4         18 Yara Vasquez   3.91
+ 5         43 Grant Nelson   3.88
+ 6         12 Victor Parker  3.87
+ 7         13 Yara Turner    3.85
+ 8         29 Quinn Vasquez  3.82
+ 9          2 Stacy Roberts  3.81
+10          4 Claire Young   3.76
+# i 40 more rows
+\end{verbatim}
+
+\section{Joining Tables}\label{joining-tables}
+
+Since we are working with multiple tables, it might be beneficial to
+join them together. Before we attempt this with our database we will
+look at a basic example to try and see how it can be done. In the code
+below we have 5 different products, showing the product id along with
+the product name, and 6 different orders, showing the order number,
+product id, and the quantity bought.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{products }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(}
+  \AttributeTok{product\_id =} \DecValTok{1}\SpecialCharTok{:}\DecValTok{5}\NormalTok{,}
+  \AttributeTok{product\_name =} \FunctionTok{c}\NormalTok{(}\StringTok{"Laptop"}\NormalTok{, }\StringTok{"Phone"}\NormalTok{, }\StringTok{"Tablet"}\NormalTok{, }\StringTok{"Monitor"}\NormalTok{, }\StringTok{"Candybar"}\NormalTok{)}
+\NormalTok{)}
+
+\CommentTok{\# Orders table}
+\NormalTok{orders }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(}
+  \AttributeTok{order\_id =} \DecValTok{101}\SpecialCharTok{:}\DecValTok{106}\NormalTok{,}
+  \AttributeTok{product\_id =} \FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{, }\DecValTok{2}\NormalTok{, }\DecValTok{3}\NormalTok{, }\DecValTok{4}\NormalTok{, }\DecValTok{13}\NormalTok{),}
+  \AttributeTok{quantity =} \FunctionTok{c}\NormalTok{(}\DecValTok{2}\NormalTok{, }\DecValTok{1}\NormalTok{, }\DecValTok{3}\NormalTok{, }\DecValTok{2}\NormalTok{, }\DecValTok{1}\NormalTok{, }\DecValTok{1}\NormalTok{)}
+\NormalTok{)}
+
+\NormalTok{products}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+  product_id product_name
+1          1       Laptop
+2          2        Phone
+3          3       Tablet
+4          4      Monitor
+5          5     Candybar
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{orders}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+  order_id product_id quantity
+1      101          1        2
+2      102          2        1
+3      103          2        3
+4      104          3        2
+5      105          4        1
+6      106         13        1
+\end{verbatim}
+
+Keeping these tables separate instead of combining them into one large
+table avoids duplication, simplifies updates (e.g., changing a product
+name), makes data easier to manage, and facilitates analysis.
+
+We can notice that product\_id is present in both tables, allowing us to
+combine the two tables using that variable as the common element. For
+this we will use the \texttt{inner\_join()} function which will return
+only the rows that match in both tables. Notice that the product
+``Candybar'' did not appear in the joined list, and neither did order
+``106'' which bought product ``13'' (as these orders/products are not
+present in both lists). There are other types of join functions as well,
+such as left, right, and full joins, which combine tables in a way that
+preserves unmatched rows from one or both tables depending on the type
+of join.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{inner\_join}\NormalTok{(orders, products, }\AttributeTok{by =} \StringTok{"product\_id"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+  order_id product_id quantity product_name
+1      101          1        2       Laptop
+2      102          2        1        Phone
+3      103          2        3        Phone
+4      104          3        2       Tablet
+5      105          4        1      Monitor
+\end{verbatim}
+
+In the code below we show both how it can be done in SQL and dplyr. In
+the SQL query, we join \texttt{Students} with \texttt{Enrollments} using
+\texttt{student\_id} as the common key, and then join
+\texttt{Enrollments} with \texttt{Courses} using \texttt{course\_id.}
+After that we are only selecting the \texttt{name},
+\texttt{course\_name}, and \texttt{grade} variables.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{combine\_query }\OtherTok{\textless{}{-}} \StringTok{"SELECT Students.name, Courses.course\_name, Enrollments.grade}
+\StringTok{                  FROM Students}
+\StringTok{                  JOIN Enrollments ON Students.student\_id = Enrollments.student\_id}
+\StringTok{                  JOIN Courses ON Enrollments.course\_id = Courses.course\_id"}
+
+\NormalTok{combined\_tables }\OtherTok{\textless{}{-}} \FunctionTok{dbGetQuery}\NormalTok{(db\_con, combine\_query)}
+\FunctionTok{head}\NormalTok{(combined\_tables)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+           name       course_name grade
+1 Olivia Miller        Intro to R    C+
+2 Olivia Miller        Calculus I    B+
+3 Olivia Miller Literary Analysis     C
+4 Olivia Miller        Statistics    C+
+5 Olivia Miller  Machine Learning    C+
+6 Stacy Roberts        Intro to R     A
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# dplyr}
+\FunctionTok{tbl}\NormalTok{(db\_con, }\StringTok{"Students"}\NormalTok{) }\SpecialCharTok{|\textgreater{}}
+  \FunctionTok{inner\_join}\NormalTok{(}\FunctionTok{tbl}\NormalTok{(db\_con, }\StringTok{"Enrollments"}\NormalTok{), }\AttributeTok{by =} \StringTok{"student\_id"}\NormalTok{) }\SpecialCharTok{|\textgreater{}}
+  \FunctionTok{inner\_join}\NormalTok{(}\FunctionTok{tbl}\NormalTok{(db\_con, }\StringTok{"Courses"}\NormalTok{), }\AttributeTok{by =} \StringTok{"course\_id"}\NormalTok{) }\SpecialCharTok{|\textgreater{}}
+  \FunctionTok{select}\NormalTok{(name, course\_name, grade)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+# Source:   SQL [?? x 3]
+# Database: sqlite 3.50.4 [C:\Data-330-Book\college.db]
+   name          course_name       grade
+   <chr>         <chr>             <chr>
+ 1 Olivia Miller Intro to R        C+   
+ 2 Olivia Miller Calculus I        B+   
+ 3 Olivia Miller Literary Analysis C    
+ 4 Olivia Miller Statistics        C+   
+ 5 Olivia Miller Machine Learning  C+   
+ 6 Stacy Roberts Intro to R        A    
+ 7 Stacy Roberts Machine Learning  A-   
+ 8 Nate Anderson Calculus I        B    
+ 9 Nate Anderson Machine Learning  C    
+10 Claire Young  Statistics        C+   
+# i more rows
+\end{verbatim}
+
+\section{Grouping and Summarising}\label{grouping-and-summarising}
+
+In addition to selecting, filtering, and arranging the data, we can also
+summarize and group by different variables. In the code below we look at
+the ``Enrollments'' table, group by \texttt{student\_id} to count how
+many courses each student is enrolled in. This allows us to count how
+many courses each student is enrolled in during the semester.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{classes\_per\_student\_query }\OtherTok{\textless{}{-}} \StringTok{"SELECT student\_id, COUNT(course\_id)}
+\StringTok{                              FROM Enrollments}
+\StringTok{                              GROUP BY student\_id"}
+
+\NormalTok{students\_per\_class }\OtherTok{\textless{}{-}} \FunctionTok{dbGetQuery}\NormalTok{(db\_con, classes\_per\_student\_query)}
+\FunctionTok{head}\NormalTok{(students\_per\_class)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+  student_id COUNT(course_id)
+1          1                5
+2          2                2
+3          3                2
+4          4                2
+5          5                3
+6          6                3
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{tbl}\NormalTok{(db\_con, }\StringTok{"Enrollments"}\NormalTok{) }\SpecialCharTok{|\textgreater{}} 
+  \FunctionTok{group\_by}\NormalTok{(student\_id) }\SpecialCharTok{|\textgreater{}}
+  \FunctionTok{summarise}\NormalTok{(}\AttributeTok{count =} \FunctionTok{n}\NormalTok{())}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+# Source:   SQL [?? x 2]
+# Database: sqlite 3.50.4 [C:\Data-330-Book\college.db]
+   student_id count
+        <int> <int>
+ 1          1     5
+ 2          2     2
+ 3          3     2
+ 4          4     2
+ 5          5     3
+ 6          6     3
+ 7          7     2
+ 8          8     2
+ 9          9     2
+10         10     4
+# i more rows
+\end{verbatim}
+
+We can also count the number of students enrolled in each course by
+running the following code:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{students\_per\_course\_query }\OtherTok{\textless{}{-}}   \StringTok{"SELECT course\_id, COUNT(student\_id)}
+\StringTok{                               FROM Enrollments}
+\StringTok{                               GROUP BY course\_id"}
+
+\NormalTok{students\_per\_course }\OtherTok{\textless{}{-}} \FunctionTok{dbGetQuery}\NormalTok{(db\_con, students\_per\_course\_query)}
+\FunctionTok{head}\NormalTok{(students\_per\_course)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+  course_id COUNT(student_id)
+1         1                18
+2         2                17
+3         3                17
+4         4                13
+5         5                18
+6         6                16
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{tbl}\NormalTok{(db\_con, }\StringTok{"Enrollments"}\NormalTok{) }\SpecialCharTok{|\textgreater{}} 
+  \FunctionTok{group\_by}\NormalTok{(course\_id) }\SpecialCharTok{|\textgreater{}}
+  \FunctionTok{summarise}\NormalTok{(}\AttributeTok{count =} \FunctionTok{n}\NormalTok{())}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+# Source:   SQL [10 x 2]
+# Database: sqlite 3.50.4 [C:\Data-330-Book\college.db]
+   course_id count
+       <int> <int>
+ 1         1    18
+ 2         2    17
+ 3         3    17
+ 4         4    13
+ 5         5    18
+ 6         6    16
+ 7         7    18
+ 8         8    15
+ 9         9    14
+10        10    18
+\end{verbatim}
+
+\section{Disconnecting from the
+Database}\label{disconnecting-from-the-database}
+
+Once we have finished accessing a database, it is good practice to
+disconnect from it. This frees up resources on our computer (and the
+server we are connecting to). It also prevents us from accidentally
+writing or modifying the database and ensures other users can access and
+modify the data without issues.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{dbDisconnect}\NormalTok{(db\_con)}
+\end{Highlighting}
+\end{Shaded}
+
 
 
 
