@@ -772,7 +772,7 @@ lecture. I recommend creating a ``Data-330'' folder that will house all
 of the files that we use throughout this semester. This can be done by
 creating an R project and moving the file to the correct folder.
 
-\begin{tcolorbox}[enhanced jigsaw, opacityback=0, arc=.35mm, left=2mm, breakable, leftrule=.75mm, bottomrule=.15mm, colframe=quarto-callout-tip-color-frame, opacitybacktitle=0.6, bottomtitle=1mm, coltitle=black, toptitle=1mm, colbacktitle=quarto-callout-tip-color!10!white, titlerule=0mm, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Supplemental Material}, toprule=.15mm, colback=white, rightrule=.15mm]
+\begin{tcolorbox}[enhanced jigsaw, colback=white, colframe=quarto-callout-tip-color-frame, coltitle=black, titlerule=0mm, opacitybacktitle=0.6, rightrule=.15mm, toptitle=1mm, opacityback=0, colbacktitle=quarto-callout-tip-color!10!white, breakable, leftrule=.75mm, left=2mm, bottomrule=.15mm, bottomtitle=1mm, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Supplemental Material}, toprule=.15mm, arc=.35mm]
 
 College Database we will be using
 
@@ -1347,6 +1347,469 @@ modify the data without issues.
 \end{Highlighting}
 \end{Shaded}
 
+\bookmarksetup{startatroot}
+
+\chapter{JSON Data}\label{json-data}
+
+In the previous lecture we were working with relational databases which
+held structured data. As a reminder, structured data is organized in
+rows and columns with each ``cell'' containing a single observation.
+This type of data fits nicely into a relational table. In this lecture
+we will start to take a look at JSON (JavaScript Object Notation) data,
+which happens to be semi-structured data. This type of data will have a
+flexible schema with some ``cells'' having multiple values. The reason
+why we want to become familiar with working with JSON data is because
+this type of data is commonly seen with web APIs, user-logs, and many
+other types of data.
+
+JSON data will have a few basic properties that we should go over before
+diving into the lecture. To begin, the data within it can either be a
+string, a number, a boolean (logical), or a null value. The objects will
+be within curly brackets \{\}, the arrays will be rigid brackets {[}{]},
+and nesting can occur (meaning objects can be inside of arrays and
+arrays can be inside of objects). Before we can see an example of this
+we will need to install the \texttt{jsonlite} package and call the
+library:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# install.packages("jsonlite") }
+\FunctionTok{library}\NormalTok{(jsonlite)}
+\FunctionTok{library}\NormalTok{(dplyr)}
+\FunctionTok{library}\NormalTok{(tidyr)}
+\end{Highlighting}
+\end{Shaded}
+
+\section{Making a JSON dataset}\label{making-a-json-dataset}
+
+In the example below we have a brief example of what JSON data might
+look like. In it we have a variable name with a string result, a
+variable age with a number result, a variable regarding if they are
+looking for a job with a boolean result, and finally a variable skills
+with an list of 3 items. We can convert the JSON data into R by using
+the \texttt{fromJSON()} function. The output is itself a list because
+only a single JSON object is present.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{json\_text }\OtherTok{\textless{}{-}} \StringTok{\textquotesingle{}\{}
+\StringTok{                "name":"Emmit",}
+\StringTok{                "age":25,}
+\StringTok{                "seeking\_job": true,}
+\StringTok{                "skills":["R","SQL","Python"]}
+\StringTok{              \}\textquotesingle{}}
+
+\NormalTok{sample\_resume }\OtherTok{\textless{}{-}} \FunctionTok{fromJSON}\NormalTok{(json\_text)}
+\NormalTok{sample\_resume}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+$name
+[1] "Emmit"
+
+$age
+[1] 25
+
+$seeking_job
+[1] TRUE
+
+$skills
+[1] "R"      "SQL"    "Python"
+\end{verbatim}
+
+In the next example we have an array containing multiple objects. This
+will allow the output (when read into R) to be a nested data frame.
+Notice how the data frame contains both the variable hobbies and pets
+which have either 0, 1, or multiple values listed.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{students\_json }\OtherTok{\textless{}{-}} \StringTok{\textquotesingle{}[}
+\StringTok{  \{}
+\StringTok{    "id": 1,}
+\StringTok{    "name": "Alice",}
+\StringTok{    "age": 20,}
+\StringTok{    "hobbies": ["reading", "chess"],}
+\StringTok{    "pets": ["cat"],}
+\StringTok{    "scores": \{"math": 90, "english": 85\}}
+\StringTok{  \},}
+\StringTok{  \{}
+\StringTok{    "id": 2,}
+\StringTok{    "name": "Bob",}
+\StringTok{    "age": 22,}
+\StringTok{    "hobbies": ["cycling"],}
+\StringTok{    "pets": [],}
+\StringTok{    "scores": \{"math": 75, "english": 80\}}
+\StringTok{  \},}
+\StringTok{  \{}
+\StringTok{    "id": 3,}
+\StringTok{    "name": "Claire",}
+\StringTok{    "age": 19,}
+\StringTok{    "hobbies": ["painting", "reading"],}
+\StringTok{    "pets": ["dog", "parrot"],}
+\StringTok{    "scores": \{"math": 95, "english": 92\}}
+\StringTok{  \},}
+\StringTok{  \{}
+\StringTok{    "id": 4,}
+\StringTok{    "name": "David",}
+\StringTok{    "age": 21,}
+\StringTok{    "hobbies": ["gaming"],}
+\StringTok{    "pets": [],}
+\StringTok{    "scores": \{"math": 88, "english": 90\}}
+\StringTok{  \},}
+\StringTok{  \{}
+\StringTok{    "id": 5,}
+\StringTok{    "name": "Ella",}
+\StringTok{    "age": 20,}
+\StringTok{    "hobbies": [],}
+\StringTok{    "pets": ["rabbit"],}
+\StringTok{    "scores": \{"math": 82, "english": 87\}}
+\StringTok{  \}}
+\StringTok{]\textquotesingle{}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{students }\OtherTok{\textless{}{-}} \FunctionTok{fromJSON}\NormalTok{(students\_json, }\AttributeTok{simplifyDataFrame =} \ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{students}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+  id   name age           hobbies        pets scores.math scores.english
+1  1  Alice  20    reading, chess         cat          90             85
+2  2    Bob  22           cycling                      75             80
+3  3 Claire  19 painting, reading dog, parrot          95             92
+4  4  David  21            gaming                      88             90
+5  5   Ella  20                        rabbit          82             87
+\end{verbatim}
+
+\section{Unnesting a JSON dataset}\label{unnesting-a-json-dataset}
+
+Because it will be difficult to work with a list-column in R, we will
+need to manipulate the dataset. To do this we will use the
+\texttt{unnest\_*()} function. To begin, we will unnest the scores
+variable which had both math and english scores contained in the object.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{students }\SpecialCharTok{|\textgreater{}} \FunctionTok{unnest}\NormalTok{(scores)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+# A tibble: 5 x 7
+     id name     age hobbies   pets       math english
+  <int> <chr>  <int> <list>    <list>    <int>   <int>
+1     1 Alice     20 <chr [2]> <chr [1]>    90      85
+2     2 Bob       22 <chr [1]> <chr [0]>    75      80
+3     3 Claire    19 <chr [2]> <chr [2]>    95      92
+4     4 David     21 <chr [1]> <chr [0]>    88      90
+5     5 Ella      20 <chr [0]> <chr [1]>    82      87
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{students\_flat }\OtherTok{\textless{}{-}}\NormalTok{ students }\SpecialCharTok{|\textgreater{}} \FunctionTok{unnest}\NormalTok{(scores)}
+\end{Highlighting}
+\end{Shaded}
+
+The two main functions we will utilize are the \texttt{unnest\_longer()}
+function which will turn each elements of a list-column into a row, and
+the \texttt{unnest\_wider()} function which will turn each element of a
+list-column into a regular column. We can see the impact of both
+functions below, with the \texttt{unnest\_longer()} causing us to have
+``repeat'' observations while the \texttt{unnest\_wider()} causes it to
+have 2 columns appear. Depending on what the data represents will
+determine which method should be used.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{students\_flat }\SpecialCharTok{|\textgreater{}} \FunctionTok{unnest\_longer}\NormalTok{(hobbies)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+# A tibble: 6 x 7
+     id name     age hobbies  pets       math english
+  <int> <chr>  <int> <chr>    <list>    <int>   <int>
+1     1 Alice     20 reading  <chr [1]>    90      85
+2     1 Alice     20 chess    <chr [1]>    90      85
+3     2 Bob       22 cycling  <chr [0]>    75      80
+4     3 Claire    19 painting <chr [2]>    95      92
+5     3 Claire    19 reading  <chr [2]>    95      92
+6     4 David     21 gaming   <chr [0]>    88      90
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{students\_flat }\SpecialCharTok{|\textgreater{}} \FunctionTok{unnest\_wider}\NormalTok{(hobbies, }\AttributeTok{names\_sep =} \StringTok{""}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+# A tibble: 5 x 8
+     id name     age hobbies1 hobbies2 pets       math english
+  <int> <chr>  <int> <chr>    <chr>    <list>    <int>   <int>
+1     1 Alice     20 reading  chess    <chr [1]>    90      85
+2     2 Bob       22 cycling  <NA>     <chr [0]>    75      80
+3     3 Claire    19 painting reading  <chr [2]>    95      92
+4     4 David     21 gaming   <NA>     <chr [0]>    88      90
+5     5 Ella      20 <NA>     <NA>     <chr [1]>    82      87
+\end{verbatim}
+
+For this example we will probably want to use the
+\texttt{unnest\_longer()} function because the hobbies and pets are not
+ordinal data, so it will probably make it more difficult if the hobbies
+were spread across multiple different columns.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{students\_full }\OtherTok{\textless{}{-}}\NormalTok{ students\_flat }\SpecialCharTok{|\textgreater{}} 
+  \FunctionTok{unnest\_longer}\NormalTok{(hobbies, }\AttributeTok{keep\_empty =} \ConstantTok{TRUE}\NormalTok{) }\SpecialCharTok{|\textgreater{}} 
+  \FunctionTok{unnest\_longer}\NormalTok{(pets, }\AttributeTok{keep\_empty =} \ConstantTok{TRUE}\NormalTok{)}
+
+\NormalTok{students\_full}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+# A tibble: 9 x 7
+     id name     age hobbies  pets    math english
+  <int> <chr>  <int> <chr>    <chr>  <int>   <int>
+1     1 Alice     20 reading  cat       90      85
+2     1 Alice     20 chess    cat       90      85
+3     2 Bob       22 cycling  <NA>      75      80
+4     3 Claire    19 painting dog       95      92
+5     3 Claire    19 painting parrot    95      92
+6     3 Claire    19 reading  dog       95      92
+7     3 Claire    19 reading  parrot    95      92
+8     4 David     21 gaming   <NA>      88      90
+9     5 Ella      20 <NA>     rabbit    82      87
+\end{verbatim}
+
+\section{Using dplyr on a JSON
+dataset}\label{using-dplyr-on-a-json-dataset}
+
+Now that the data is in a more workable format we can use our
+\texttt{dplyr} skills analyze the dataset. We do want to be careful
+though, as some of the observations are repeats (we have 2 sets of
+Alice's math and english scores). If we wanted to determine who has a
+pet and what kind then we could remove the individuals without any pets
+and then display just the distinct observations (remember: when we
+unnested we ``duplicated'' portions of some rows).
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{students\_full }\SpecialCharTok{|\textgreater{}}
+  \FunctionTok{filter}\NormalTok{(}\SpecialCharTok{!}\FunctionTok{is.na}\NormalTok{(pets)) }\SpecialCharTok{|\textgreater{}}
+  \FunctionTok{select}\NormalTok{(name, pets) }\SpecialCharTok{|\textgreater{}}
+  \FunctionTok{distinct}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+# A tibble: 4 x 2
+  name   pets  
+  <chr>  <chr> 
+1 Alice  cat   
+2 Claire dog   
+3 Claire parrot
+4 Ella   rabbit
+\end{verbatim}
+
+We could do something similar if we wanted to determine how many hobbies
+each student had. We would then need to group by the name (or by the
+unique id value if multiple people have the same name) and then count
+the number of observations which have a non-missing hobby.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{students\_full }\SpecialCharTok{|\textgreater{}}
+  \FunctionTok{group\_by}\NormalTok{(name) }\SpecialCharTok{|\textgreater{}}
+  \FunctionTok{summarise}\NormalTok{(}\AttributeTok{num\_hobbies =} \FunctionTok{sum}\NormalTok{(}\SpecialCharTok{!}\FunctionTok{is.na}\NormalTok{(hobbies)))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+# A tibble: 5 x 2
+  name   num_hobbies
+  <chr>        <int>
+1 Alice            2
+2 Bob              1
+3 Claire           4
+4 David            1
+5 Ella             0
+\end{verbatim}
+
+We can calculate the scores for individuals with pets. There are many
+possible ways to do this, but since some individuals have ``duplicated''
+scores we can simply take the average (which is the same as the exact
+score).
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{students\_full }\SpecialCharTok{|\textgreater{}}
+  \FunctionTok{filter}\NormalTok{(}\SpecialCharTok{!}\FunctionTok{is.na}\NormalTok{(pets)) }\SpecialCharTok{|\textgreater{}}
+  \FunctionTok{group\_by}\NormalTok{(name) }\SpecialCharTok{|\textgreater{}}
+  \FunctionTok{summarise}\NormalTok{(}\AttributeTok{avg\_math =} \FunctionTok{mean}\NormalTok{(math), }\AttributeTok{avg\_english =} \FunctionTok{mean}\NormalTok{(english))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+# A tibble: 3 x 3
+  name   avg_math avg_english
+  <chr>     <dbl>       <dbl>
+1 Alice        90          85
+2 Claire       95          92
+3 Ella         82          87
+\end{verbatim}
+
+If we wanted to list all of the pets and hobbies for each student we
+have to do a little bit of finagling. We can essentially gather all of
+the hobbies and then use the \texttt{paste()} function to put them next
+to each other in a single ``cell''. This allows them to be displayed
+together in R (though this set-up is not nice for evaluation purposes).
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{students\_full }\SpecialCharTok{|\textgreater{}}
+  \FunctionTok{group\_by}\NormalTok{(name) }\SpecialCharTok{|\textgreater{}}
+  \FunctionTok{summarise}\NormalTok{(}\AttributeTok{hobbies\_list =} \FunctionTok{paste}\NormalTok{(}\FunctionTok{unique}\NormalTok{(}\FunctionTok{na.omit}\NormalTok{(hobbies)), }\AttributeTok{collapse=}\StringTok{", "}\NormalTok{), }
+            \AttributeTok{pets\_list =} \FunctionTok{paste}\NormalTok{(}\FunctionTok{unique}\NormalTok{(}\FunctionTok{na.omit}\NormalTok{(pets)), }\AttributeTok{collapse=}\StringTok{", "}\NormalTok{)) }
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+# A tibble: 5 x 3
+  name   hobbies_list        pets_list    
+  <chr>  <chr>               <chr>        
+1 Alice  "reading, chess"    "cat"        
+2 Bob    "cycling"           ""           
+3 Claire "painting, reading" "dog, parrot"
+4 David  "gaming"            ""           
+5 Ella   ""                  "rabbit"     
+\end{verbatim}
+
+If we want to convert all of the missing values (NA) to say ``None''
+then we will need to mutate the dataset. There is a function called
+\texttt{case\_when()} which is sort of like the \texttt{ifelse()}. If
+the value returns false then it will return the word ``None'' and if it
+is true it will return the original value.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{students\_full }\SpecialCharTok{|\textgreater{}}
+  \FunctionTok{mutate}\NormalTok{( }\AttributeTok{pets =} \FunctionTok{case\_when}\NormalTok{(}\FunctionTok{is.na}\NormalTok{(pets) }\SpecialCharTok{\textasciitilde{}} \StringTok{"None"}\NormalTok{, }\ConstantTok{TRUE} \SpecialCharTok{\textasciitilde{}} \FunctionTok{as.character}\NormalTok{(pets)),}
+          \AttributeTok{hobbies =} \FunctionTok{case\_when}\NormalTok{(}\FunctionTok{is.na}\NormalTok{(hobbies) }\SpecialCharTok{\textasciitilde{}} \StringTok{"None"}\NormalTok{, }\ConstantTok{TRUE} \SpecialCharTok{\textasciitilde{}} \FunctionTok{as.character}\NormalTok{(hobbies)))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+# A tibble: 9 x 7
+     id name     age hobbies  pets    math english
+  <int> <chr>  <int> <chr>    <chr>  <int>   <int>
+1     1 Alice     20 reading  cat       90      85
+2     1 Alice     20 chess    cat       90      85
+3     2 Bob       22 cycling  None      75      80
+4     3 Claire    19 painting dog       95      92
+5     3 Claire    19 painting parrot    95      92
+6     3 Claire    19 reading  dog       95      92
+7     3 Claire    19 reading  parrot    95      92
+8     4 David     21 gaming   None      88      90
+9     5 Ella      20 None     rabbit    82      87
+\end{verbatim}
+
+\section{Writing a dataframe to JSON}\label{writing-a-dataframe-to-json}
+
+Finally, we will discuss how we can take the dataset that we are working
+with and put it back into JSON format. To do this we will re-create a
+nested columns with the \texttt{summarise()} and \texttt{list()}
+functions and then will use the \texttt{toJSON()} function to write it
+back.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{students\_clean }\OtherTok{\textless{}{-}}\NormalTok{ students\_full }\SpecialCharTok{|\textgreater{}}
+  \FunctionTok{group\_by}\NormalTok{(id, name, age, math, english) }\SpecialCharTok{|\textgreater{}}
+  \FunctionTok{summarise}\NormalTok{(}
+    \AttributeTok{hobbies =} \FunctionTok{list}\NormalTok{(}\FunctionTok{unique}\NormalTok{(hobbies)),}
+    \AttributeTok{pets =} \FunctionTok{list}\NormalTok{(}\FunctionTok{unique}\NormalTok{(pets)),}
+    \AttributeTok{.groups =} \StringTok{"drop"}
+\NormalTok{  )}
+
+\NormalTok{students\_clean}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+# A tibble: 5 x 7
+     id name     age  math english hobbies   pets     
+  <int> <chr>  <int> <int>   <int> <list>    <list>   
+1     1 Alice     20    90      85 <chr [2]> <chr [1]>
+2     2 Bob       22    75      80 <chr [1]> <chr [1]>
+3     3 Claire    19    95      92 <chr [2]> <chr [2]>
+4     4 David     21    88      90 <chr [1]> <chr [1]>
+5     5 Ella      20    82      87 <chr [1]> <chr [1]>
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{toJSON}\NormalTok{(students\_clean, }\AttributeTok{pretty =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{na =} \StringTok{"null"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+[
+  {
+    "id": 1,
+    "name": "Alice",
+    "age": 20,
+    "math": 90,
+    "english": 85,
+    "hobbies": ["reading", "chess"],
+    "pets": ["cat"]
+  },
+  {
+    "id": 2,
+    "name": "Bob",
+    "age": 22,
+    "math": 75,
+    "english": 80,
+    "hobbies": ["cycling"],
+    "pets": [null]
+  },
+  {
+    "id": 3,
+    "name": "Claire",
+    "age": 19,
+    "math": 95,
+    "english": 92,
+    "hobbies": ["painting", "reading"],
+    "pets": ["dog", "parrot"]
+  },
+  {
+    "id": 4,
+    "name": "David",
+    "age": 21,
+    "math": 88,
+    "english": 90,
+    "hobbies": ["gaming"],
+    "pets": [null]
+  },
+  {
+    "id": 5,
+    "name": "Ella",
+    "age": 20,
+    "math": 82,
+    "english": 87,
+    "hobbies": [null],
+    "pets": ["rabbit"]
+  }
+] 
+\end{verbatim}
 
 
 

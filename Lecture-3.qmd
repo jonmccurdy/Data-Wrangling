@@ -1,0 +1,173 @@
+# JSON Data
+
+In the previous lecture we were working with relational databases which held structured data. As a reminder, structured data is organized in rows and columns with each "cell" containing a single observation. This type of data fits nicely into a relational table. In this lecture we will start to take a look at JSON (JavaScript Object Notation) data, which happens to be semi-structured data. This type of data will have a flexible schema with some "cells" having multiple values. The reason why we want to become familiar with working with JSON data is because this type of data is commonly seen with web APIs, user-logs, and many other types of data. 
+
+JSON data will have a few basic properties that we should go over before diving into the lecture. To begin, the data within it can either be a string, a number, a boolean (logical), or a null value. The objects will be within curly brackets {}, the arrays will be rigid brackets [], and nesting can occur (meaning objects can be inside of arrays and arrays can be inside of objects). Before we can see an example of this we will need to install the `jsonlite` package and call the library:
+
+```{r}
+#| warning: false
+# install.packages("jsonlite") 
+library(jsonlite)
+library(dplyr)
+library(tidyr)
+```
+
+## Making a JSON dataset
+
+In the example below we have a brief example of what JSON data might look like. In it we have a variable name with a string result, a variable age with a number result, a variable regarding if they are looking for a job with a boolean result, and finally a variable skills with an list of 3 items. We can convert the JSON data into R by using the `fromJSON()` function. The output is itself a list because only a single JSON object is present. 
+
+```{r}
+json_text <- '{
+                "name":"Emmit",
+                "age":25,
+                "seeking_job": true,
+                "skills":["R","SQL","Python"]
+              }'
+
+sample_resume <- fromJSON(json_text)
+sample_resume
+```
+
+In the next example we have an array containing multiple objects. This will allow the output (when read into R) to be a nested data frame. Notice how the data frame contains both the variable hobbies and pets which have either 0, 1, or multiple values listed. 
+
+```{r}
+students_json <- '[
+  {
+    "id": 1,
+    "name": "Alice",
+    "age": 20,
+    "hobbies": ["reading", "chess"],
+    "pets": ["cat"],
+    "scores": {"math": 90, "english": 85}
+  },
+  {
+    "id": 2,
+    "name": "Bob",
+    "age": 22,
+    "hobbies": ["cycling"],
+    "pets": [],
+    "scores": {"math": 75, "english": 80}
+  },
+  {
+    "id": 3,
+    "name": "Claire",
+    "age": 19,
+    "hobbies": ["painting", "reading"],
+    "pets": ["dog", "parrot"],
+    "scores": {"math": 95, "english": 92}
+  },
+  {
+    "id": 4,
+    "name": "David",
+    "age": 21,
+    "hobbies": ["gaming"],
+    "pets": [],
+    "scores": {"math": 88, "english": 90}
+  },
+  {
+    "id": 5,
+    "name": "Ella",
+    "age": 20,
+    "hobbies": [],
+    "pets": ["rabbit"],
+    "scores": {"math": 82, "english": 87}
+  }
+]'
+```
+
+```{r}
+students <- fromJSON(students_json, simplifyDataFrame = TRUE)
+students
+```
+
+## Unnesting a JSON dataset
+
+Because it will be difficult to work with a list-column in R, we will need to manipulate the dataset. To do this we will use the `unnest_*()` function. To begin, we will unnest the scores variable which had both math and english scores contained in the object. 
+
+```{r}
+students |> unnest(scores)
+
+students_flat <- students |> unnest(scores)
+
+```
+
+The two main functions we will utilize are the `unnest_longer()` function which will turn each elements of a list-column into a row, and the `unnest_wider()` function which will turn each element of a list-column into a regular column. We can see the impact of both functions below, with the `unnest_longer()` causing us to have "repeat" observations while the `unnest_wider()` causes it to have 2 columns appear. Depending on what the data represents will determine which method should be used. 
+
+```{r}
+students_flat |> unnest_longer(hobbies)
+students_flat |> unnest_wider(hobbies, names_sep = "")
+```
+For this example we will probably want to use the `unnest_longer()` function because the hobbies and pets are not ordinal data, so it will probably make it more difficult if the hobbies were spread across multiple different columns.
+
+```{r}
+students_full <- students_flat |> 
+  unnest_longer(hobbies, keep_empty = TRUE) |> 
+  unnest_longer(pets, keep_empty = TRUE)
+
+students_full
+```
+
+## Using dplyr on a JSON dataset
+
+Now that the data is in a more workable format we can use our `dplyr` skills analyze the dataset. We do want to be careful though, as some of the observations are repeats (we have 2 sets of Alice's math and english scores). If we wanted to determine who has a pet and what kind then we could remove the individuals without any pets and then display just the distinct observations (remember: when we unnested we "duplicated" portions of some rows).
+
+```{r}
+students_full |>
+  filter(!is.na(pets)) |>
+  select(name, pets) |>
+  distinct()
+```
+
+We could do something similar if we wanted to determine how many hobbies each student had. We would then need to group by the name (or by the unique id value if multiple people have the same name) and then count the number of observations which have a non-missing hobby. 
+
+```{r}
+students_full |>
+  group_by(name) |>
+  summarise(num_hobbies = sum(!is.na(hobbies)))
+```
+We can calculate the scores for individuals with pets. There are many possible ways to do this, but since some individuals have "duplicated" scores we can simply take the average (which is the same as the exact score).
+
+```{r}
+students_full |>
+  filter(!is.na(pets)) |>
+  group_by(name) |>
+  summarise(avg_math = mean(math), avg_english = mean(english))
+```
+
+If we wanted to list all of the pets and hobbies for each student we have to do a little bit of finagling. We can essentially gather all of the hobbies and then use the `paste()` function to put them next to each other in a single "cell". This allows them to be displayed together in R (though this set-up is not nice for evaluation purposes).
+
+```{r}
+students_full |>
+  group_by(name) |>
+  summarise(hobbies_list = paste(unique(na.omit(hobbies)), collapse=", "), 
+            pets_list = paste(unique(na.omit(pets)), collapse=", ")) 
+```
+
+If we want to convert all of the missing values (NA) to say "None" then we will need to mutate the dataset. There is a function called `case_when()` which is sort of like the `ifelse()`. If the value returns false then it will return the word "None" and if it is true it will return the original value. 
+
+```{r}
+students_full |>
+  mutate( pets = case_when(is.na(pets) ~ "None", TRUE ~ as.character(pets)),
+          hobbies = case_when(is.na(hobbies) ~ "None", TRUE ~ as.character(hobbies)))
+```
+
+## Writing a dataframe to JSON
+
+Finally, we will discuss how we can take the dataset that we are working with and put it back into JSON format. To do this we will re-create a nested columns with the `summarise()` and `list()` functions and then will use the `toJSON()` function to write it back. 
+
+```{r}
+students_clean <- students_full |>
+  group_by(id, name, age, math, english) |>
+  summarise(
+    hobbies = list(unique(hobbies)),
+    pets = list(unique(pets)),
+    .groups = "drop"
+  )
+
+students_clean
+
+toJSON(students_clean, pretty = TRUE, na = "null")
+```
+
+
+
