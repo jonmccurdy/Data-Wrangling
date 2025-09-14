@@ -1,0 +1,74 @@
+[
+  {
+    "id": 1,
+    "name": "Alice",
+    "age": 18,
+    "gpa": 3.8,
+    "major": null,
+    "contact": { "email": "alice@example.com", "phone": "555-1234" },
+    "hobbies": ["cycling", "painting"]
+  },
+  {
+    "id": 2,
+    "name": "Bob",
+    "age": 22,
+    "gpa": 3.2,
+    "major": ["Math"],
+    "contact": { "email": "bob@example.com", "phone": "555-5678" },
+    "hobbies": []
+  },
+  {
+    "id": 3,
+    "name": "Claire",
+    "age": 19,
+    "gpa": 3.9,
+    "major": ["Data", "Math"],
+    "contact": { "email": "claire@example.com", "phone": "555-9876" },
+    "hobbies": ["chess"]
+  },
+  {
+    "id": 4,
+    "name": "David",
+    "age": 20,
+    "gpa": 3.5,
+    "major": ["Cyber"],
+    "contact": { "email": "david@example.com", "phone": "555-2468" },
+    "hobbies": ["soccer", "gaming"]
+  },
+  {
+    "id": 5,
+    "name": "Eva",
+    "age": 21,
+    "gpa": 3.6,
+    "major": ["Data", "Cyber"],
+    "contact": { "email": "eva@example.com", "phone": "555-1357" },
+    "hobbies": ["painting", "tennis"]
+  },
+  {
+    "id": 6,
+    "name": "Frank",
+    "age": 23,
+    "gpa": 2.9,
+    "major": ["Math"],
+    "contact": { "email": "frank@example.com", "phone": "555-2469" },
+    "hobbies": ["gaming"]
+  },
+  {
+    "id": 7,
+    "name": "Grace",
+    "age": 18,
+    "gpa": 3.7,
+    "major": ["Cyber", "Math"],
+    "contact": { "email": "grace@example.com", "phone": "555-3579" },
+    "hobbies": ["chess", "cycling"]
+  },
+  {
+    "id": 8,
+    "name": "Henry",
+    "age": 22,
+    "gpa": 3.1,
+    "major": null,
+    "contact": { "email": "henry@example.com", "phone": "555-4680" },
+    "hobbies": ["soccer"]
+  }
+]
