@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<students>
+
+  <student id="1001" commuter="yes">
+    <name>Emma Johnson</name>
+    <major>Computer Science</major>
+    <gpa>3.8</gpa>
+    <courses>
+      <course code="CS101" grade="A">Introduction to Programming</course>
+      <course code="MATH200" grade="B+">Linear Algebra</course>
+      <course code="ENG150" grade="A-">Academic Writing</course>
+    </courses>
+  </student>
+
+  <student id="1002" commuter="no">
+    <name>Liam Smith</name>
+    <major>Biology</major>
+    <gpa>3.4</gpa>
+    <courses>
+      <course code="BIO101" grade="A-">General Biology</course>
+      <course code="CHEM101" grade="B">General Chemistry</course>
+    </courses>
+  </student>
+
+  <student id="1003" commuter="yes">
+    <name>Olivia Brown</name>
+    <major>Mathematics</major>
+    <gpa>3.9</gpa>
+    <courses>
+      <course code="MATH200" grade="A">Linear Algebra</course>
+      <course code="MATH310" grade="A-">Discrete Mathematics</course>
+      <course code="CS101" grade="B+">Introduction to Programming</course>
+      <course code="STAT250" grade="A">Statistics I</course>
+    </courses>
+  </student>
+
+  <student id="1004" commuter="no">
+    <name>Noah Davis</name>
+    <major>Physics</major>
+    <gpa>3.6</gpa>
+    <courses>
+      <course code="PHY101" grade="A">General Physics</course>
+      <course code="MATH200" grade="B+">Linear Algebra</course>
+      <course code="CS101" grade="B">Introduction to Programming</course>
+    </courses>
+  </student>
+
+  <student id="1005" commuter="yes">
+    <name>Ava Wilson</name>
+    <major>English</major>
+    <gpa>3.7</gpa>
+    <courses>
+      <course code="ENG150" grade="A-">Academic Writing</course>
+      <course code="HIST101" grade="B+">World History</course>
+    </courses>
+  </student>
+
+  <student id="1006" commuter="no">
+    <name>James Miller</name>
+    <major>Chemistry</major>
+    <gpa>3.5</gpa>
+    <courses>
+      <course code="CHEM101" grade="A-">General Chemistry</course>
+      <course code="BIO101" grade="B+">General Biology</course>
+    </courses>
+  </student>
+
+  <student id="1007" commuter="yes">
+    <name>Isabella Martinez</name>
+    <major>Computer Science</major>
+    <gpa>3.9</gpa>
+    <courses>
+      <course code="CS101" grade="A">Introduction to Programming</course>
+      <course code="CS201" grade="A-">Data Structures</course>
+      <course code="MATH200" grade="B+">Linear Algebra</course>
+    </courses>
+  </student>
+
+  <student id="1008" commuter="no">
+    <name>William Garcia</name>
+    <major>Mathematics</major>
+    <gpa>3.2</gpa>
+    <courses>
+      <course code="MATH200" grade="B">Linear Algebra</course>
+      <course code="STAT250" grade="B+">Statistics I</course>
+    </courses>
+  </student>
+
+  <student id="1009" commuter="yes">
+    <name>Sophia Rodriguez</name>
+    <major>Biology</major>
+    <gpa>3.6</gpa>
+    <courses>
+      <course code="BIO101" grade="A-">General Biology</course>
+      <course code="CHEM101" grade="B+">General Chemistry</course>
+      <course code="STAT250" grade="A">Statistics I</course>
+    </courses>
+  </student>
+
+  <student id="1010" commuter="no">
+    <name>Benjamin Lee</name>
+    <major>Physics</major>
+    <gpa>3.7</gpa>
+    <courses>
+      <course code="PHY101" grade="A-">General Physics</course>
+      <course code="MATH200" grade="B+">Linear Algebra</course>
+    </courses>
+  </student>
+
+  <student id="1011" commuter="yes">
+    <name>Mia Perez</name>
+    <major>English</major>
+    <gpa>3.8</gpa>
+    <courses>
+      <course code="ENG150" grade="A">Academic Writing</course>
+      <course code="HIST101" grade="B+">World History</course>
+      <course code="PHIL101" grade="A-">Introduction to Philosophy</course>
+    </courses>
+  </student>
+
+  <student id="1012" commuter="no">
+    <name>Alexander Gonzalez</name>
+    <major>Chemistry</major>
+    <gpa>3.5</gpa>
+    <courses>
+      <course code="CHEM101" grade="A">General Chemistry</course>
+      <course code="CHEM201" grade="B+">Organic Chemistry</course>
+    </courses>
+  </student>
+
+  <student id="1013" commuter="yes">
+    <name>Charlotte Hall</name>
+    <major>Computer Science</major>
+    <gpa>3.9</gpa>
+    <courses>
+      <course code="CS101" grade="A">Introduction to Programming</course>
+      <course code="CS201" grade="A">Data Structures</course>
+      <course code="CS301" grade="A-">Algorithms</course>
+    </courses>
+  </student>
+
+  <student id="1014" commuter="no">
+    <name>Daniel Young</name>
+    <major>Mathematics</major>
+    <gpa>3.3</gpa>
+    <courses>
+      <course code="MATH200" grade="B">Linear Algebra</course>
+      <course code="MATH310" grade="B+">Discrete Mathematics</course>
+    </courses>
+  </student>
+
+  <student id="1015" commuter="yes">
+    <name>Amelia Allen</name>
+    <major>Biology</major>
+    <gpa>3.6</gpa>
+    <courses>
+      <course code="BIO101" grade="A-">General Biology</course>
+      <course code="BIO201" grade="B+">Microbiology</course>
+    </courses>
+  </student>
+
+  <student id="1016" commuter="no">
+    <name>Matthew Scott</name>
+    <major>Physics</major>
+    <gpa>3.8</gpa>
+    <courses>
+      <course code="PHY101" grade="A">General Physics</course>
+      <course code="PHY201" grade="A-">Electromagnetism</course>
+      <course code="MATH200" grade="B+">Linear Algebra</course>
+    </courses>
+  </student>
+
+  <student id="1017" commuter="yes">
+    <name>Harper Adams</name>
+    <major>English</major>
+    <gpa>3.7</gpa>
+    <courses>
+      <course code="ENG150" grade="A-">Academic Writing</course>
+      <course code="HIST101" grade="B+">World History</course>
+    </courses>
+  </student>
+
+  <student id="1018" commuter="no">
+    <name>Jackson Baker</name>
+    <major>Chemistry</major>
+    <gpa>3.4</gpa>
+    <courses>
+      <course code="CHEM101" grade="B+">General Chemistry</course>
+      <course code="CHEM201" grade="B">Organic Chemistry</course>
+    </courses>
+  </student>
+
+  <student id="1019" commuter="yes">
+    <name>Evelyn Nelson</name>
+    <major>Computer Science</major>
+    <gpa>4.0</gpa>
+    <courses>
+      <course code="CS101" grade="A">Introduction to Programming</course>
+      <course code="CS201" grade="A">Data Structures</course>
+      <course code="CS301" grade="A">Algorithms</course>
+      <course code="CS401" grade="A-">Machine Learning</course>
+    </courses>
+  </student>
+
+  <student id="1020" commuter="no">
+    <name>Michael Carter</name>
+    <major>Mathematics</major>
+    <gpa>3.5</gpa>
+    <courses>
+      <course code="MATH200" grade="B+">Linear Algebra</course>
+      <course code="MATH310" grade="A-">Discrete Mathematics</course>
+      <course code="STAT250" grade="A">Statistics I</course>
+    </courses>
+  </student>
+
+</students>

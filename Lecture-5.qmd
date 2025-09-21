@@ -1,0 +1,115 @@
+# HTML Data
+
+So far this semester we have investigated how we can scrape both JSON and XML data from webpages. Another method we will investigate is HTML scraping. This will be a useful topic considering every webpage is written in HTML with the content wrapped in tags (like \<h1\> for titles, \<p\> for paragraphs, and \<table\> for tables, and many many more). Within these tags we can have attributes, just like we did with XML data, that will make it easier to target specific content. Before we dive into the material, a helpful hint in determining which tags and attributes to reference it to right-click on the text in the browser and choosing "Inspect". This will allow us to view the raw HTML structure, which we can use to identify what tag is related to the content, and then we can extract it using the `revest` library in R.
+
+## Introductory Example
+
+To understand the general idea of this, we will look at the website <https://example.com/>. If we were to right-click on the page and "View Page Source", it will open up another tab to show us the raw HTML structure. Scrolling to the very bottom of the page, we can see the \<body\> tag, which displays the text currently on the page. It should look something like this:
+
+```{text}
+<body>
+<div>
+    <h1>Example Domain</h1>
+    <p>This domain is for use in illustrative examples in documents. You may use this
+    domain in literature without prior coordination or asking for permission.</p>
+    <p><a href="https://www.iana.org/domains/example">More information...</a></p>
+</div>
+</body>
+</html>
+```
+
+In order to extract this data and use in R, we can use the `rvest` library along with the `read_html()`, `html_elements()`, and `html_text()` functions. In the example below, we can see how we pull the main heading information stored in the \<h1\> tag.
+
+```{r}
+#| warning: false
+
+library(rvest)
+library(dplyr)
+
+page <- read_html("https://example.com")
+page |> html_elements("h1") |> html_text()
+```
+We can also extract the paragraph text stored in the \<p\> tag. Notice how we get multiple character elements because there are multiple \<p\> tags present. 
+
+```{r}
+page |> html_elements("p") |> html_text()
+```
+
+If we wanted to only extract certain <p> tags, we could use a few different methods. If we only wanted the first one we could alter the function to be `html_element()`. We could also use the `nth-of-type()` argument to select which one to extract. Finally, if the tag has a nested element, we can reference it by typing in both tags as seen below:
+
+```{r}
+page |> html_element("p") |> html_text()
+page |> html_elements("p:nth-of-type(1)") |> html_text()
+
+page |> html_elements("p:nth-of-type(2)") |> html_text()
+page |> html_elements("p a") |> html_text()
+```
+In order to access the attribute of the tag, we can use the `html_attr()` function as seen below:
+
+```{r}
+page |> html_element("p a") |> html_attr("href")
+```
+## BBC Example
+
+Now that we have seen a basic example, lets see a slightly more complex one. If we go to <https://www.bbc.com/news>, we can see a lot of different news articles along with short descriptions of them. Looking at the "View Page Source", we can see that it is virtually unreadable due to the vast amount of data present. And since it will not be fun to read through it all to see what the different tags are called, we can right-click the text we are interested in and then "Inspect" it. A pane will appear on half of the screen that allows us to see what tag the data is saved under. In the example below, we can see the article title is saved under the \<h2\> tag.
+
+![](Images/BBC-Example-Headers.PNG){fig-align="center"}
+Looking at the description, we can see that it is saved under the \<p\> tag.
+
+![](Images/BBC-Example-Description.PNG){fig-align="center"}
+
+We can this use this information to scrape the webpage and to get the article titles and descriptions in a similar manner to what we did before
+
+```{r}
+# Note: when you run this you might get different results as the webpage is constantly updated
+
+bbc <- read_html("https://www.bbc.com")
+
+bbc |> html_elements("h2") |> html_text() |> head()
+
+bbc |> html_elements("p") |> html_text(trim=TRUE) |> head()
+```
+
+We could do something similar and get the contents of the article as well. We should be weary to do this though, as this information is copyrighted by the BBC and thus we should respect their work product. For this example, we will just display the first few sentences as an example:
+
+```{r}
+article <- read_html("https://www.bbc.com/news/articles/ce800enrglzo")
+
+article |> html_elements("p") |> html_text() |> head(4)
+```
+
+## Scraping Tables
+
+The last example we will look at for now is scraping an HTML table from a webpage and making it available to us in R. For this example, we will look at the Mount St. Mary's Basketball Teams statistics: <https://mountathletics.com/sports/mens-basketball/stats/2024-25>. We can see that there are a number of different tables on the page, and by right-clicking the table and hitting the "Inspect" button, we can see that they are all saved under the \<table\> tag. We can screpe it in a similar manner, only this time we will need to use the `html_table()` function. 
+
+```{r}
+mount <- read_html("https://mountathletics.com/sports/mens-basketball/stats/2024-25")
+
+basketball_tables <- mount |> html_elements("table") |> html_table(fill = TRUE) 
+
+overall_stats <- basketball_tables[[2]]
+
+overall_stats
+```
+
+The table we scraped off of the website has 2 different header rows, one being more categorical ("minutes", "fg", "scoring", etc.) with the sub-header row being more detailed. We can combine the header names so that "Minutes_AVG", "Scoring_AVG", and "Rebounds_AVG" are not confused for each other. We would want to go ahead and clean the other column names up as well, as "GS_GS" is redundant, but we will let that be an exercise for the reader. One last thing we will do it see how we can convert all of the columns except for name and jersey number into a numeric value using the `mutate()` and `across()` functions. 
+
+```{r}
+colnames(overall_stats) <- paste(colnames(overall_stats), overall_stats[1, ], sep = "_")
+
+overall_stats <- overall_stats[-1,]
+
+overall_stats_clean <- overall_stats |> 
+  mutate( across(-c(Player_Player, `#_#`), ~ as.numeric(.) ))
+
+overall_stats_clean
+```
+
+
+
+
+
+
+
+
+

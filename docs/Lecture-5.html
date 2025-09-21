@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.29">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>5&nbsp; HTML Data – Data-330-Book</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./Lecture-4.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-0815c480559380816a4d1ea211a47e91.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-364982630eef5352dd1537128a8ed5cb.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./Lecture-5.html"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">HTML Data</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Data-330-Book</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Lecture-1.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Data Exploration Refresher</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Lecture-2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Introducing Databases</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Lecture-3.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">JSON Data</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Lecture-4.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">XML Data</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Lecture-5.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">HTML Data</span></span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#introductory-example" id="toc-introductory-example" class="nav-link active" data-scroll-target="#introductory-example"><span class="header-section-number">5.1</span> Introductory Example</a></li>
+  <li><a href="#bbc-example" id="toc-bbc-example" class="nav-link" data-scroll-target="#bbc-example"><span class="header-section-number">5.2</span> BBC Example</a></li>
+  <li><a href="#scraping-tables" id="toc-scraping-tables" class="nav-link" data-scroll-target="#scraping-tables"><span class="header-section-number">5.3</span> Scraping Tables</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">HTML Data</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>So far this semester we have investigated how we can scrape both JSON and XML data from webpages. Another method we will investigate is HTML scraping. This will be a useful topic considering every webpage is written in HTML with the content wrapped in tags (like &lt;h1&gt; for titles, &lt;p&gt; for paragraphs, and &lt;table&gt; for tables, and many many more). Within these tags we can have attributes, just like we did with XML data, that will make it easier to target specific content. Before we dive into the material, a helpful hint in determining which tags and attributes to reference it to right-click on the text in the browser and choosing “Inspect”. This will allow us to view the raw HTML structure, which we can use to identify what tag is related to the content, and then we can extract it using the <code>revest</code> library in R.</p>
+<section id="introductory-example" class="level2" data-number="5.1">
+<h2 data-number="5.1" class="anchored" data-anchor-id="introductory-example"><span class="header-section-number">5.1</span> Introductory Example</h2>
+<p>To understand the general idea of this, we will look at the website <a href="https://example.com/" class="uri">https://example.com/</a>. If we were to right-click on the page and “View Page Source”, it will open up another tab to show us the raw HTML structure. Scrolling to the very bottom of the page, we can see the &lt;body&gt; tag, which displays the text currently on the page. It should look something like this:</p>
+<div class="cell">
+<pre class="text cell-code"><code>&lt;body&gt;
+&lt;div&gt;
+    &lt;h1&gt;Example Domain&lt;/h1&gt;
+    &lt;p&gt;This domain is for use in illustrative examples in documents. You may use this
+    domain in literature without prior coordination or asking for permission.&lt;/p&gt;
+    &lt;p&gt;&lt;a href="https://www.iana.org/domains/example"&gt;More information...&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+</div>
+<p>In order to extract this data and use in R, we can use the <code>rvest</code> library along with the <code>read_html()</code>, <code>html_elements()</code>, and <code>html_text()</code> functions. In the example below, we can see how we pull the main heading information stored in the &lt;h1&gt; tag.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rvest)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>page <span class="ot">&lt;-</span> <span class="fu">read_html</span>(<span class="st">"https://example.com"</span>)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>page <span class="sc">|&gt;</span> <span class="fu">html_elements</span>(<span class="st">"h1"</span>) <span class="sc">|&gt;</span> <span class="fu">html_text</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Example Domain"</code></pre>
+</div>
+</div>
+<p>We can also extract the paragraph text stored in the &lt;p&gt; tag. Notice how we get multiple character elements because there are multiple &lt;p&gt; tags present.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>page <span class="sc">|&gt;</span> <span class="fu">html_elements</span>(<span class="st">"p"</span>) <span class="sc">|&gt;</span> <span class="fu">html_text</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "This domain is for use in illustrative examples in documents. You may use this\n    domain in literature without prior coordination or asking for permission."
+[2] "More information..."                                                                                                                                          </code></pre>
+</div>
+</div>
+If we wanted to only extract certain
+<p>
+</p><p>tags, we could use a few different methods. If we only wanted the first one we could alter the function to be <code>html_element()</code>. We could also use the <code>nth-of-type()</code> argument to select which one to extract. Finally, if the tag has a nested element, we can reference it by typing in both tags as seen below:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>page <span class="sc">|&gt;</span> <span class="fu">html_element</span>(<span class="st">"p"</span>) <span class="sc">|&gt;</span> <span class="fu">html_text</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "This domain is for use in illustrative examples in documents. You may use this\n    domain in literature without prior coordination or asking for permission."</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>page <span class="sc">|&gt;</span> <span class="fu">html_elements</span>(<span class="st">"p:nth-of-type(1)"</span>) <span class="sc">|&gt;</span> <span class="fu">html_text</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "This domain is for use in illustrative examples in documents. You may use this\n    domain in literature without prior coordination or asking for permission."</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>page <span class="sc">|&gt;</span> <span class="fu">html_elements</span>(<span class="st">"p:nth-of-type(2)"</span>) <span class="sc">|&gt;</span> <span class="fu">html_text</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "More information..."</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>page <span class="sc">|&gt;</span> <span class="fu">html_elements</span>(<span class="st">"p a"</span>) <span class="sc">|&gt;</span> <span class="fu">html_text</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "More information..."</code></pre>
+</div>
+</div>
+<p>In order to access the attribute of the tag, we can use the <code>html_attr()</code> function as seen below:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>page <span class="sc">|&gt;</span> <span class="fu">html_element</span>(<span class="st">"p a"</span>) <span class="sc">|&gt;</span> <span class="fu">html_attr</span>(<span class="st">"href"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "https://www.iana.org/domains/example"</code></pre>
+</div>
+</div>
+</section>
+<section id="bbc-example" class="level2" data-number="5.2">
+<h2 data-number="5.2" class="anchored" data-anchor-id="bbc-example"><span class="header-section-number">5.2</span> BBC Example</h2>
+<p>Now that we have seen a basic example, lets see a slightly more complex one. If we go to <a href="https://www.bbc.com/news" class="uri">https://www.bbc.com/news</a>, we can see a lot of different news articles along with short descriptions of them. Looking at the “View Page Source”, we can see that it is virtually unreadable due to the vast amount of data present. And since it will not be fun to read through it all to see what the different tags are called, we can right-click the text we are interested in and then “Inspect” it. A pane will appear on half of the screen that allows us to see what tag the data is saved under. In the example below, we can see the article title is saved under the &lt;h2&gt; tag.</p>
+<p><img src="Images/BBC-Example-Headers.PNG" class="img-fluid quarto-figure quarto-figure-center"> Looking at the description, we can see that it is saved under the &lt;p&gt; tag.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="Images/BBC-Example-Description.PNG" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
+</figure>
+</div>
+<p>We can this use this information to scrape the webpage and to get the article titles and descriptions in a similar manner to what we did before</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Note: when you run this you might get different results as the webpage is constantly updated</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>bbc <span class="ot">&lt;-</span> <span class="fu">read_html</span>(<span class="st">"https://www.bbc.com"</span>)</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>bbc <span class="sc">|&gt;</span> <span class="fu">html_elements</span>(<span class="st">"h2"</span>) <span class="sc">|&gt;</span> <span class="fu">html_text</span>() <span class="sc">|&gt;</span> <span class="fu">head</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Recognising Palestinian statehood opens another question - who would lead it?"
+[2] "UK rewarding Hamas, says mother of freed British-Israeli hostage"             
+[3] "Recognising Palestinian statehood opens another question - who would lead it?"
+[4] "UK rewarding Hamas, says mother of freed British-Israeli hostage"             
+[5] "UK formally recognises Palestinian state"                                     
+[6] "Trump arrives at Charlie Kirk memorial as tens of thousands attend service"   </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>bbc <span class="sc">|&gt;</span> <span class="fu">html_elements</span>(<span class="st">"p"</span>) <span class="sc">|&gt;</span> <span class="fu">html_text</span>(<span class="at">trim=</span><span class="cn">TRUE</span>) <span class="sc">|&gt;</span> <span class="fu">head</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "With the president approaching 90 years of age and another possible candidate in jail, finding the right leadership would be a challenge"             
+[2] "Sir Keir Starmer has insisted Hamas can have \"no future, no role in government, no role in security\"."                                              
+[3] "With the president approaching 90 years of age and another possible candidate in jail, finding the right leadership would be a challenge"             
+[4] "Sir Keir Starmer has insisted Hamas can have \"no future, no role in government, no role in security\"."                                              
+[5] "Canada and Australia also announced the move on Sunday, with Israeli PM Benjamin Netanyahu accusing leaders of giving a \"huge reward to terrorism\"."
+[6] "The conservative activist was shot and killed while speaking to students at a university in Utah on 10 September."                                    </code></pre>
+</div>
+</div>
+<p>We could do something similar and get the contents of the article as well. We should be weary to do this though, as this information is copyrighted by the BBC and thus we should respect their work product. For this example, we will just display the first few sentences as an example:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>article <span class="ot">&lt;-</span> <span class="fu">read_html</span>(<span class="st">"https://www.bbc.com/news/articles/ce800enrglzo"</span>)</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>article <span class="sc">|&gt;</span> <span class="fu">html_elements</span>(<span class="st">"p"</span>) <span class="sc">|&gt;</span> <span class="fu">html_text</span>() <span class="sc">|&gt;</span> <span class="fu">head</span>(<span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Sir Keir Starmer has announced the UK's recognition of a Palestinian state, in what represents a significant change in government policy."                                                                                                   
+[2] "In a video statement on X, the prime minister said: \"In the face of the growing horror in the Middle East we are acting to keep alive the possibility of peace and a two-state solution.\""                                                 
+[3] "Australia and Canada also announced formal recognition of the state of Palestine, with Portugal and France expected to follow."                                                                                                              
+[4] "The decision has drawn fierce criticism from the Israeli government, families of hostages held in Gaza and some Conservatives. Responding on Sunday, Israeli Prime Minister Benjamin Netanyahu said a Palestinian state \"will not happen\"."</code></pre>
+</div>
+</div>
+</section>
+<section id="scraping-tables" class="level2" data-number="5.3">
+<h2 data-number="5.3" class="anchored" data-anchor-id="scraping-tables"><span class="header-section-number">5.3</span> Scraping Tables</h2>
+<p>The last example we will look at for now is scraping an HTML table from a webpage and making it available to us in R. For this example, we will look at the Mount St.&nbsp;Mary’s Basketball Teams statistics: <a href="https://mountathletics.com/sports/mens-basketball/stats/2024-25" class="uri">https://mountathletics.com/sports/mens-basketball/stats/2024-25</a>. We can see that there are a number of different tables on the page, and by right-clicking the table and hitting the “Inspect” button, we can see that they are all saved under the &lt;table&gt; tag. We can screpe it in a similar manner, only this time we will need to use the <code>html_table()</code> function.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>mount <span class="ot">&lt;-</span> <span class="fu">read_html</span>(<span class="st">"https://mountathletics.com/sports/mens-basketball/stats/2024-25"</span>)</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>basketball_tables <span class="ot">&lt;-</span> mount <span class="sc">|&gt;</span> <span class="fu">html_elements</span>(<span class="st">"table"</span>) <span class="sc">|&gt;</span> <span class="fu">html_table</span>(<span class="at">fill =</span> <span class="cn">TRUE</span>) </span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>overall_stats <span class="ot">&lt;-</span> basketball_tables[[<span class="dv">2</span>]]</span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>overall_stats</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 18 × 27
+   `#`   Player  GP    GS    Minutes Minutes FG    FG    FG    `3PT` `3PT` `3PT`
+   &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;
+ 1 "#"   "Playe… GP    "GS"  TOT     AVG     FGM   FGA   FG%   3PT   3PTA  3PT% 
+ 2 "04"  "Adeba… 36    "36"  1043    29.0    175   340   .515  22    72    .306 
+ 3 "08"  "Hobbs… 30    "26"  839     28.0    123   333   .369  54    173   .312 
+ 4 "13"  "Ard J… 21    "3"   512     24.4    87    163   .534  1     6     .167 
+ 5 "14"  "Cordi… 35    "33"  1037    29.6    160   269   .595  2     7     .286 
+ 6 "01"  "Pache… 30    "30"  846     28.2    88    188   .468  77    166   .464 
+ 7 "45"  "Lipsc… 36    "36"  1209    33.6    67    190   .353  36    106   .340 
+ 8 "02"  "Keyes… 32    "2"   616     19.3    71    190   .374  48    133   .361 
+ 9 "23"  "Ervin… 34    "14"  525     15.4    60    169   .355  14    52    .269 
+10 "09"  "Khadr… 29    "0"   322     11.1    26    84    .310  12    51    .235 
+11 "10"  "Haigh… 19    "0"   123     6.5     12    45    .267  10    41    .244 
+12 "05"  "Dread… 18    "0"   120     6.7     12    25    .480  7     14    .500 
+13 "03"  "Ogunf… 3     "0"   8       2.7     2     2     1.000 0     0     .000 
+14 "12"  "Wilso… 24    "0"   96      4.0     6     16    .375  2     6     .333 
+15 "06"  "Hartm… 2     "0"   4       2.0     0     0     .000  0     0     .000 
+16 "TM"  "Team\… 36    "0"   0       0.0     0     0     .000  0     0     .000 
+17 ""    "Total" 36    ""    7300    202.8   889   2014  .441  285   827   .345 
+18 ""    "Oppon… 36    ""    7300    202.8   903   2196  .411  313   989   .316 
+# ℹ 15 more variables: FT &lt;chr&gt;, FT &lt;chr&gt;, FT &lt;chr&gt;, Scoring &lt;chr&gt;,
+#   Scoring &lt;chr&gt;, Rebounds &lt;chr&gt;, Rebounds &lt;chr&gt;, Rebounds &lt;chr&gt;,
+#   Rebounds &lt;chr&gt;, PF &lt;chr&gt;, AST &lt;chr&gt;, TO &lt;chr&gt;, STL &lt;chr&gt;, BLK &lt;chr&gt;,
+#   `Bio Link` &lt;chr&gt;</code></pre>
+</div>
+</div>
+<p>The table we scraped off of the website has 2 different header rows, one being more categorical (“minutes”, “fg”, “scoring”, etc.) with the sub-header row being more detailed. We can combine the header names so that “Minutes_AVG”, “Scoring_AVG”, and “Rebounds_AVG” are not confused for each other. We would want to go ahead and clean the other column names up as well, as “GS_GS” is redundant, but we will let that be an exercise for the reader. One last thing we will do it see how we can convert all of the columns except for name and jersey number into a numeric value using the <code>mutate()</code> and <code>across()</code> functions.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(overall_stats) <span class="ot">&lt;-</span> <span class="fu">paste</span>(<span class="fu">colnames</span>(overall_stats), overall_stats[<span class="dv">1</span>, ], <span class="at">sep =</span> <span class="st">"_"</span>)</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>overall_stats <span class="ot">&lt;-</span> overall_stats[<span class="sc">-</span><span class="dv">1</span>,]</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>overall_stats_clean <span class="ot">&lt;-</span> overall_stats <span class="sc">|&gt;</span> </span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>( <span class="fu">across</span>(<span class="sc">-</span><span class="fu">c</span>(Player_Player, <span class="st">`</span><span class="at">#_#</span><span class="st">`</span>), <span class="sc">~</span> <span class="fu">as.numeric</span>(.) ))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: There was 1 warning in `mutate()`.
+ℹ In argument: `across(-c(Player_Player, `#_#`), ~as.numeric(.))`.
+Caused by warning:
+! NAs introduced by coercion</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>overall_stats_clean</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 17 × 27
+   `#_#` Player_Player         GP_GP GS_GS Minutes_TOT Minutes_AVG FG_FGM FG_FGA
+   &lt;chr&gt; &lt;chr&gt;                 &lt;dbl&gt; &lt;dbl&gt;       &lt;dbl&gt;       &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
+ 1 "04"  "Adebayo, Dola\r\n  …    36    36        1043        29      175    340
+ 2 "08"  "Hobbs, Dallas\r\n  …    30    26         839        28      123    333
+ 3 "13"  "Ard Jr., Terrell\r\…    21     3         512        24.4     87    163
+ 4 "14"  "Cordilia, Jedy\r\n …    35    33        1037        29.6    160    269
+ 5 "01"  "Pacheco, Carmelo\r\…    30    30         846        28.2     88    188
+ 6 "45"  "Lipscomb, Xavier\r\…    36    36        1209        33.6     67    190
+ 7 "02"  "Keyes, Arlandus\r\n…    32     2         616        19.3     71    190
+ 8 "23"  "Ervin, Javon\r\n   …    34    14         525        15.4     60    169
+ 9 "09"  "Khadre Kébé, Abdou\…    29     0         322        11.1     26     84
+10 "10"  "Haigh, Patrick\r\n …    19     0         123         6.5     12     45
+11 "05"  "Dread, Malcolm\r\n …    18     0         120         6.7     12     25
+12 "03"  "Ogunfuye, Jonathan\…     3     0           8         2.7      2      2
+13 "12"  "Wilson, Trey\r\n   …    24     0          96         4        6     16
+14 "06"  "Hartman, Jaxon\r\n …     2     0           4         2        0      0
+15 "TM"  "Team\r\n           …    36     0           0         0        0      0
+16 ""    "Total"                  36    NA        7300       203.     889   2014
+17 ""    "Opponents"              36    NA        7300       203.     903   2196
+# ℹ 19 more variables: `FG_FG%` &lt;dbl&gt;, `3PT_3PT` &lt;dbl&gt;, `3PT_3PTA` &lt;dbl&gt;,
+#   `3PT_3PT%` &lt;dbl&gt;, FT_FTM &lt;dbl&gt;, FT_FTA &lt;dbl&gt;, `FT_FT%` &lt;dbl&gt;,
+#   Scoring_PTS &lt;dbl&gt;, Scoring_AVG &lt;dbl&gt;, Rebounds_OFF &lt;dbl&gt;,
+#   Rebounds_DEF &lt;dbl&gt;, Rebounds_TOT &lt;dbl&gt;, Rebounds_AVG &lt;dbl&gt;, PF_PF &lt;dbl&gt;,
+#   AST_AST &lt;dbl&gt;, TO_TO &lt;dbl&gt;, STL_STL &lt;dbl&gt;, BLK_BLK &lt;dbl&gt;,
+#   `Bio Link_Bio Link` &lt;dbl&gt;</code></pre>
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./Lecture-4.html" class="pagination-link" aria-label="XML Data">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">XML Data</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

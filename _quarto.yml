@@ -12,6 +12,7 @@ book:
     - Lecture-2.qmd
     - Lecture-3.qmd
     - Lecture-4.qmd
+    - Lecture-5.qmd
 
 bibliography: references.bib
 
